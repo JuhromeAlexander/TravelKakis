@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Register',
-                        style: GoogleFonts.ptSerif(
+                        style: GoogleFonts.roboto(
                           textStyle: Theme.of(context).textTheme.displayLarge,
                           fontSize: 38,
                           color: Colors.white,
