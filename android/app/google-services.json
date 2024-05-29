@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "513356343164",
+    "project_id": "travelkakis",
+    "storage_bucket": "travelkakis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513356343164:android:e00b6b2720ee711c5d66f9",
+        "android_client_info": {
+          "package_name": "com.travel.kakis.travel_kakis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8chRujwFhEgabhCwdCsxXKB7Vy-HOKPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
