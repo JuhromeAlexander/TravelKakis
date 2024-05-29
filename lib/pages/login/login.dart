@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_kakis/pages/login/Register.dart';
 
 void main() async {
   runApp(
@@ -30,8 +31,9 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           Container(
             // alignment: Alignment.topCenter,
-            height: double.infinity, //why infinity
+            height: double.infinity,
             child: SingleChildScrollView(
+              //enable scrolling in case phone size is small
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
@@ -48,10 +50,9 @@ class _LoginState extends State<Login> {
                         color: Colors.white,
                       )),
 
-                  const //email textfield
-                  Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 0, left: 0, right: 0, top: 50.0),
+                  // const //email textfield
+                  const Padding(
+                      padding: EdgeInsets.only(top: 50.0),
                       child: TextField(
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -66,11 +67,9 @@ class _LoginState extends State<Login> {
 
                   //password textfield
                   const Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 0, left: 0, right: 0, top: 20.0),
+                    padding: EdgeInsets.only(top: 20.0),
                     child: TextField(
                         obscureText: true,
-                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
@@ -105,11 +104,13 @@ class _LoginState extends State<Login> {
                   ),
 
                   //Registering a new account
-                  const Align(
+                  Align(
                       alignment: Alignment.center,
                       child: TextButton(
-                        onPressed: null,
-                        child: Text(
+                        onPressed: () {
+                          _navigateToRegister(context);
+                        },
+                        child: const Text(
                           'No account? Register here',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
@@ -117,36 +118,42 @@ class _LoginState extends State<Login> {
                       )),
 
                   //Divider
-                  const Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: Divider(
-                              color: Colors.white,
-                            )
-                        ),
-                        Text(
-                          "Or",
-                          style: TextStyle(
-                            color: Colors.white
-                          ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                              color: Colors.white,
-                            )
-                        ),
-                      ]
-                  ),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: Container(
+                          margin: const EdgeInsets.only(right: 10.0),
+                          child: const Divider(
+                            color: Colors.white,
+                            height: 36,
+                          )),
+                    ),
+                    const Text(
+                      "Or",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Expanded(
+                      child: Container(
+                          margin: const EdgeInsets.only(left: 10.0),
+                          child: const Divider(
+                            color: Colors.white,
+                            height: 36,
+                          )),
+                    ),
+                  ]),
 
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6), // <-- Radius
-                        ),
-                        minimumSize: const Size(double.infinity, 40)),
-                    child: const Text('Login with Google'),
-                  ),
+                  //Login with google
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          minimumSize: const Size(double.infinity, 40)),
+                      child: const Text('Login with Google'),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -155,4 +162,12 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
+
+//navigate to register page
+void _navigateToRegister(context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Register()),
+  );
 }
