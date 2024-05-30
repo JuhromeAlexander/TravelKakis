@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,6 +17,28 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void registerUser() async {
+    try {
+      final credentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+    }on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The Password Provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The Account Already Exists for the Email')
+      }
+    }catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +62,7 @@ class _RegisterState extends State<Register> {
                 horizontal: 40.0,
                 // vertical: 40.0,
               ),
-              child: Column(
+                child: Column(
                 children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
@@ -55,6 +78,8 @@ class _RegisterState extends State<Register> {
                   const Padding(
                       padding: EdgeInsets.only(top: 30.0),
                       child: TextField(
+                        //Not Sure Why this is giving me Errors, but i think may need your help to check
+                        controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -71,9 +96,10 @@ class _RegisterState extends State<Register> {
                   const Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: TextField(
-                        decoration: InputDecoration(
+                          controller: usernameController,
+                          decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                              borderSide: BorderSide(color: Colors.white)),
                             hintText: 'User',
                             hintStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
@@ -86,6 +112,7 @@ class _RegisterState extends State<Register> {
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0),
                     child: TextField(
+                        controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -107,15 +134,15 @@ class _RegisterState extends State<Register> {
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(6), // <-- Radius
-                          ),
-                          minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Register'),
-                    ),
-                  )
-                ],
+                            ),
+                            minimumSize: const Size(double.infinity, 40)),
+                        child: const Text('Register'),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          )
         ],
       ),
     );

@@ -1,12 +1,13 @@
 import 'dart:ui';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travel_kakis/pages/login/Register.dart';
+import 'package:travel_kakis/features/authentication/application/Register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   runApp(
@@ -23,6 +24,58 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void signUserIn() async{
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        incorrectEmailMsg();
+      } else if (e.code == 'wrong-password') {
+        incorrectPasswordMsg();
+      }
+    }
+  }
+
+  void incorrectEmailMsg() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            title: Text('Wrong Email'),
+          );
+        },
+    );
+  }
+
+  void incorrectPasswordMsg() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Wrong Password'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +147,7 @@ class _LoginState extends State<Login> {
 
                   //Login
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: signUserIn,
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6), // <-- Radius
