@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 void main() async {
   runApp(
-    const MaterialApp(home: Register()),
+    const MaterialApp(home: Forgetpassword()),
   );
   // runApp(const Login());
 }
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class Forgetpassword extends StatefulWidget {
+  const Forgetpassword({super.key});
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _ForgetpasswordState createState() => _ForgetpasswordState();
 }
 
-class _RegisterState extends State<Register> {
+
+class _ForgetpasswordState extends State<Forgetpassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +45,7 @@ class _RegisterState extends State<Register> {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Register',
+                    child: Text('Forgot Password',
                         style: GoogleFonts.roboto(
                           textStyle: Theme.of(context).textTheme.displayLarge,
                           fontSize: 38,
@@ -67,37 +69,6 @@ class _RegisterState extends State<Register> {
                             )),
                       )),
 
-                  //Username
-                  const Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            hintText: 'User',
-                            hintStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(
-                              Icons.account_circle,
-                              color: Colors.white,
-                            )),
-                      )),
-
-                  //password
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: Colors.white,
-                            ))),
-                  ),
-
                   //Register
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
@@ -106,10 +77,10 @@ class _RegisterState extends State<Register> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(6), // <-- Radius
+                            BorderRadius.circular(6), // <-- Radius
                           ),
                           minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Register'),
+                      child: const Text('Send'),
                     ),
                   )
                 ],

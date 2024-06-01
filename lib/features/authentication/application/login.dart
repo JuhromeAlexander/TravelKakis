@@ -1,14 +1,18 @@
+import 'dart:math';
 import 'dart:ui';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travel_kakis/pages/login/Register.dart';
+import 'package:travel_kakis/features/authentication/application/Register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MaterialApp(home: Login()),
   );
@@ -23,6 +27,47 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+
+      Navigator.pop(context);
+      if (e.code == 'invalid-credential') {
+        incorrectCredMsg();
+      }
+    }
+  }
+
+  void incorrectCredMsg() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Incorrect Credentials'),
+          content: Text(
+              'The email or password entered is invalid. Please try again'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,10 +96,11 @@ class _LoginState extends State<Login> {
                       )),
 
                   // const //email textfield
-                  const Padding(
+                  Padding(
                       padding: EdgeInsets.only(top: 50.0),
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: emailController,
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Email',
@@ -66,11 +112,12 @@ class _LoginState extends State<Login> {
                       )),
 
                   //password textfield
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 20.0),
                     child: TextField(
+                        controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Password',
@@ -94,7 +141,7 @@ class _LoginState extends State<Login> {
 
                   //Login
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: signUserIn,
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6), // <-- Radius
