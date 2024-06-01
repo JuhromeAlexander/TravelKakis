@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     const MaterialApp(home: Register()),
   );
@@ -23,20 +26,58 @@ class _RegisterState extends State<Register> {
   final passwordController = TextEditingController();
 
   void registerUser() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
     try {
-      final credentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text
       );
+      Navigator.pop(context);
+      Navigator.pop(context);
     }on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       if (e.code == 'weak-password') {
-        print('The Password Provided is too weak.');
+        weakPassword();
       } else if (e.code == 'email-already-in-use') {
-        print('The Account Already Exists for the Email')
+        emailInUse();
       }
     }catch (e) {
       print(e);
     }
+  }
+
+  void weakPassword() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Weak Password'),
+          content: Text(
+              'Your password is too weak, please choose a stronger password'),
+        );
+      },
+    );
+  }
+
+  void emailInUse() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Email in use'),
+          content: Text(
+              'The email address is already in use'),
+        );
+      },
+    );
   }
 
   @override
@@ -75,13 +116,13 @@ class _RegisterState extends State<Register> {
                   ),
 
                   //Email textbox
-                  const Padding(
+                  Padding(
                       padding: EdgeInsets.only(top: 30.0),
                       child: TextField(
                         //Not Sure Why this is giving me Errors, but i think may need your help to check
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Email',
@@ -93,11 +134,11 @@ class _RegisterState extends State<Register> {
                       )),
 
                   //Username
-                  const Padding(
+                  Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: TextField(
                           controller: usernameController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                             hintText: 'User',
@@ -109,12 +150,12 @@ class _RegisterState extends State<Register> {
                       )),
 
                   //password
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 20.0),
                     child: TextField(
                         controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Password',
@@ -129,7 +170,9 @@ class _RegisterState extends State<Register> {
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        registerUser();
+                      },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
