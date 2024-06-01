@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,8 @@ import 'package:travel_kakis/features/authentication/application/Register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MaterialApp(home: Login()),
   );
@@ -24,18 +27,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() async{
+  void signUserIn() async {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
 
     try {
@@ -45,32 +47,22 @@ class _LoginState extends State<Login> {
       );
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
+
       Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        incorrectEmailMsg();
-      } else if (e.code == 'wrong-password') {
-        incorrectPasswordMsg();
+      if (e.code == 'invalid-credential') {
+        incorrectCredMsg();
       }
     }
   }
 
-  void incorrectEmailMsg() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Wrong Email'),
-          );
-        },
-    );
-  }
-
-  void incorrectPasswordMsg() {
+  void incorrectCredMsg() {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return const AlertDialog(
-          title: Text('Wrong Password'),
+          title: Text('Incorrect Credentials'),
+          content: Text(
+              'The email or password entered is invalid. Please try again'),
         );
       },
     );
@@ -104,10 +96,11 @@ class _LoginState extends State<Login> {
                       )),
 
                   // const //email textfield
-                  const Padding(
+                  Padding(
                       padding: EdgeInsets.only(top: 50.0),
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: emailController,
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Email',
@@ -119,11 +112,12 @@ class _LoginState extends State<Login> {
                       )),
 
                   //password textfield
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 20.0),
                     child: TextField(
+                        controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: 'Password',
