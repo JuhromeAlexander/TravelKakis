@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/authentication/application/Register.dart';
+import 'package:travel_kakis/features/authentication/application/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
@@ -129,11 +130,13 @@ class _LoginState extends State<Login> {
                   ),
 
                   //forgot password
-                  const Align(
+                   Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: null,
-                        child: Text(
+                        onPressed: () {
+                          _navigateToForgotPassword(context);
+                        },
+                        child: const Text(
                           'Forgot Password',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -216,5 +219,13 @@ void _navigateToRegister(context) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => const Register()),
+  );
+}
+
+//navigate to forgot password page
+void _navigateToForgotPassword(context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Forgetpassword()),
   );
 }
