@@ -4,7 +4,7 @@ Orbital Summer 2024
 ## To install the application for testing (Android devices)
 **FOR FIRST TIME ANDROID TESTING**
 If it is your first time testing Android Applications through an APK, ensure these settings are applied on your Android Device/Emulator:
-Step 1a) Open the Settings Application and navigate to **Apps** or **Apps & Notifications**
+1a. Open the Settings Application and navigate to **Apps** or **Apps & Notifications**
 Step 1b) Tap the 3 Dots in the Upper Right Hand Corner of the Device
   - If you are unable to see the 3 Dots, Skip to the Next Step
 Step 1c) Tap on **Special Access** or **Special App Access** on some Android Phones
