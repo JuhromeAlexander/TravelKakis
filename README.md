@@ -26,3 +26,7 @@ If it is your first time testing Android Applications through an APK, ensure the
     1. Navigate to where the APK File is Stored
     2. Tap the File Name, Followed by the Install Button
 
+## Built With
+
+* [Flutter](https://flutter.dev/) - Front-end
+* [Firebase](https://firebase.google.com/) - Back-end
