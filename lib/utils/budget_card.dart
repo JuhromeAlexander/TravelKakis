@@ -11,15 +11,26 @@ class BudgetCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
+      color: Colors.blue,
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getBudgetCardTitle(),
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
                 Positioned(
-                  right: 0,
+                  top: 0.0,
+                  right: 0.0,
                   child: Container(
                     decoration: BoxDecoration(
                       color: getBudgetStatusColor(),
@@ -34,15 +45,6 @@ class BudgetCard extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getBudgetCardTitle(),
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ],
                 ),
               ],
             ),
