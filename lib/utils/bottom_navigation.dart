@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class bottomNavigation extends StatelessWidget {
-  final selectedIndex;
+  int currentIndex;
+  /*
+  used valuechanged instead of valueSetter
+  value setter ->  callback is called even if the underlying value has not changed
+  valueChange might lead to a better performance (?)
+   */
   ValueChanged<int> onClicked;
+
   //constructor for bottom navigation
-  bottomNavigation({this.selectedIndex, required this.onClicked});
+  bottomNavigation({required this.currentIndex, required this.onClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +22,7 @@ class bottomNavigation extends StatelessWidget {
         onClicked(index);
       },
       indicatorColor: Colors.blueAccent,
-      selectedIndex: selectedIndex,
+      selectedIndex: currentIndex,
       destinations: const <Widget>[
         //home page
         NavigationDestination(
@@ -28,10 +35,12 @@ class bottomNavigation extends StatelessWidget {
           icon: Icon(Icons.attach_money),
           label: 'Budget',
         ),
+        //floating action button
+
         //for the add function
         NavigationDestination(
-          icon:  Icon(Icons.add),
-          label: 'Add',
+          icon:  Icon(Icons.thumb_up_alt_sharp),
+          label: 'Suggestions',
         ),
         //profile page
         NavigationDestination(
