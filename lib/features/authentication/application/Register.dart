@@ -1,7 +1,12 @@
+// import 'dart:js_interop';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travel_kakis/utils/user_information.dart' as user_info;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +45,8 @@ class _RegisterState extends State<Register> {
           email: emailController.text,
           password: passwordController.text
       );
+
+      createUser();
       Navigator.pop(context);
       Navigator.pop(context);
     }on FirebaseAuthException catch (e) {
@@ -79,6 +86,30 @@ class _RegisterState extends State<Register> {
       },
     );
   }
+
+  //create user databse
+  void createUser() async{
+    final String currYear = DateTime.now().year.toString();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    //it wont be null -> when user created, uid is auto created by firebase
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    //create user database
+    await users.doc(uid).set({
+      'dateJoined': currYear,
+      'email': emailController.text,
+      'name': usernameController.text,
+      'desc': '',
+      'trips': []
+    });
+
+    //set the user UID so that in auth, it knows what to update
+  }
+
 
   @override
   Widget build(BuildContext context) {
