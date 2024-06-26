@@ -47,7 +47,6 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
 
   //show up in the card
   printCard() {
-
     return FutureBuilder<List>(
         future: getData(),
         builder: (context, AsyncSnapshot snapshot) {

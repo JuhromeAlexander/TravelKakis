@@ -79,9 +79,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: <Widget>[
         OverviewOfTrips(),
+        OverviewOfBudget(),
         ProfileSetting(),
         // IndividualTrip(),
-        OverviewOfBudget(),
         Profile()
       ][currentPageIndex],
     );
