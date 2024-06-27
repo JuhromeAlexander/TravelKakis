@@ -6,7 +6,6 @@ import 'package:travel_kakis/features/trips/individual_trip.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 class OverviewOfTrips extends StatefulWidget {
-
   const OverviewOfTrips({super.key});
 
   @override
@@ -14,6 +13,13 @@ class OverviewOfTrips extends StatefulWidget {
 }
 
 class _OverviewOfTripsState extends State<OverviewOfTrips> {
+  //to Delete
+
+  //to setState
+  callback() {
+    setState(() {});
+  }
+
   //TODO: I don't think this is the most efficient way to do it
 
   Future<List> getData() async {
@@ -45,37 +51,56 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     return tripList;
   }
 
+  _individualTile(context, data) {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return ListTile(
+              trailing: PopupMenuButton<int>(
+                  onSelected: (value) {},
+                  itemBuilder: (BuildContext context) {
+                    // Define the menu items for the PopupMenuButton
+                    return const <PopupMenuEntry<int>>[
+                      PopupMenuItem<int>(
+                        value: 0,
+                        child: Text("Delete"),
+                      ),
+                    ];
+                  }),
+              onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>
+                          IndividualTrip(
+                            activities: data[index].getActivityList(),
+                            tripTitle: data[index].getTripTitle(),
+                            documentSnapshot: data[index]
+                                .getDocumentSnapshot(),
+                          )),
+                    );
+              },
+              title: Text(data[index].getTripTitle()),
+              subtitle: Text(
+                  '${data[index].getTripLocation()} - ${data[index]
+                      .getTripStartDate()} to ${data[index]
+                      .getTripEndDate()}'),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
+        itemCount: data.length);
+  }
+
   //show up in the card
   printCard() {
-
     return FutureBuilder<List>(
         future: getData(),
         builder: (context, AsyncSnapshot snapshot) {
           //if there's data, show it
           if (snapshot.hasData) {
             List data = snapshot.data;
-            return Flexible(
-                child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(data[index].getTripTitle()),
-                          subtitle: Text(
-                              '${data[index].getTripLocation()} - ${data[index].getTripStartDate()} to ${data[index].getTripEndDate()}'),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => IndividualTrip(
-                                  activities: data[index].getActivityList(),
-                                tripTitle: data[index].getTripTitle(),
-                                documentSnapshot: data[index].getDocumentSnapshot(),
-                              )),
-                            );
-                          },
-                        ),
-                      );
-                    }));
+            return Flexible(child: _individualTile(context, data)
+                );
             //no data
           }
           if (!snapshot.hasData) {
@@ -95,6 +120,14 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
       body: Column(
         children: <Widget>[
           printCard(),
+          ElevatedButton(
+              onPressed: () {
+                setState(() {});
+              },
+              // onPressed: () {
+              //   setState(() {
+              // }); },
+              child: Text('Refresh'))
         ],
       ),
     );
