@@ -1,18 +1,40 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class ProfileSetting extends StatefulWidget {
-  const ProfileSetting({super.key});
+  final Function callback;
+
+  const ProfileSetting({super.key, required this.callback});
 
   @override
   _ProfileSettingState createState() => _ProfileSettingState();
 }
 
 class _ProfileSettingState extends State<ProfileSetting> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+
+  void updateProfile() async {
+    CollectionReference userRef =  await FirebaseFirestore.instance.collection('users');
+    
+    await userRef.doc(user_info.getID()).update({
+      'name': nameController.text,
+      'email': emailController.text
+    });
+
+    user_info.setEmail(emailController.text);
+    user_info.setUsername(nameController.text);
+
+    widget.callback();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         appBar: AppBar(
           title: const Text('Edit Profile'),
@@ -28,10 +50,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                   Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
-                        // controller: _activityTitleController,
+                        controller: nameController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
@@ -39,10 +61,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
-                  const Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                   Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
-                        // controller: _activityTitleController,
+                        controller: emailController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
@@ -53,7 +75,9 @@ class _ProfileSettingState extends State<ProfileSetting> {
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        updateProfile();
+                      },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
