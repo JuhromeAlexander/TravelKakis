@@ -14,6 +14,12 @@ class Profile extends StatefulWidget {
 
 class _profileState extends State<Profile> {
 
+  callback() {
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +64,12 @@ class _profileState extends State<Profile> {
                       style: const TextStyle(
                         fontSize: 20,
                       ),
-                    )
+                    ),
+                    ElevatedButton(
+                        onPressed: () {setState(() {
+
+                        }); },
+                        child: Text('Refresh'))
                   ],
                 ),
               ),
@@ -69,7 +80,7 @@ class _profileState extends State<Profile> {
             children: <Widget>[
               ListTile(
                 onTap: () {
-                  _navigateToEditProfile(context);
+                  _navigateToEditProfile(context, callback);
                 },
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit Profile'),
@@ -100,9 +111,9 @@ class _profileState extends State<Profile> {
 }
 
 //navigate to edit Profile
-void _navigateToEditProfile(context) {
+void _navigateToEditProfile(context, Function callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => ProfileSetting()),
+    MaterialPageRoute(builder: (context) => ProfileSetting(callback: callback,)),
   );
 }
