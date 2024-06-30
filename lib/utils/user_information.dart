@@ -12,7 +12,6 @@ String getUsername() {
 }
 
 String getID() {
-  final String currYear = DateTime.now().year.toString();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //it wont be null -> when user created, uid is auto created by firebase
