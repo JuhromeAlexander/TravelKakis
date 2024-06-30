@@ -110,7 +110,6 @@ class _RegisterState extends State<Register> {
     //set the user UID so that in auth, it knows what to update
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

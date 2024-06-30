@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/authentication/application/login.dart';
 import 'package:travel_kakis/home_page.dart';
 import 'package:travel_kakis/main.dart';
-import 'package:travel_kakis/utils/user_information.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
-
 
 class Auth extends StatelessWidget {
 

@@ -10,8 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/authentication/application/Register.dart';
 import 'package:travel_kakis/features/authentication/application/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:travel_kakis/utils/user_information.dart' as user_info;
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

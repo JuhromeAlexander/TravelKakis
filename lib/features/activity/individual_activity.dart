@@ -1,18 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:travel_kakis/features/activity/activity.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:travel_kakis/features/activity/upload_file.dart';
 
 class IndividualActivity extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
 
-  const IndividualActivity({
-    super.key,
-    required this.documentSnapshot
-  });
+  const IndividualActivity({super.key, required this.documentSnapshot});
 
   @override
   _IndividualActivityState createState() => _IndividualActivityState();
@@ -21,21 +15,95 @@ class IndividualActivity extends StatefulWidget {
 class _IndividualActivityState extends State<IndividualActivity> {
   // Reading the data from trip collection
   printInformation(Map<String, dynamic> data) {
-    return Container(
-      child: Column(children: <Widget>[
-        Text(data['description']),
+    return ListView(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Text(
+                "Description",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Text(
+                data['cost'],
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['description']),
+        ),
         const Divider(
           color: Colors.grey,
-          height: 36,
+          height: 10,
         ),
-        Text(data['location']),
-        Text(data['phone']),
-        Text(data['website']),
-        Text(data['time']),
-        Text(data['duration']),
-        Text(data['cost']),
-      ],),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(
+            "Location",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['location']),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(
+            "Phone",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['phone']),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(
+            "Website",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['website']),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(
+            "Time",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['time']),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(
+            "Duration (Hrs)",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text(data['duration']),
+        ),
+      ],
     );
+
+    // return Container(
   }
 
   @override
@@ -46,62 +114,55 @@ class _IndividualActivityState extends State<IndividualActivity> {
         title: Text(data['title']),
       ),
       floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue,
         spaceBetweenChildren: 10,
         spacing: 10,
         icon: Icons.add,
         children: [
           SpeedDialChild(
-              child: Icon(Icons.train),
-              label: 'Edit Transport',
-              onTap: (){}
-          ),
+              child: Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
           SpeedDialChild(
               child: Icon(Icons.upload_file),
               label: 'Upload file',
-              onTap: (){}
-          ),
+              onTap: () {}),
           SpeedDialChild(
               child: Icon(Icons.info_sharp),
               label: 'Edit Information',
-              onTap: (){
-              }
-          ),
+              onTap: () {}),
         ],
       ),
       body: Column(
         children: <Widget>[
           //top half
-          Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.black87,
-              )),
+          // Expanded(
+          // flex: 3,
+          // child: Container(
+          //   color: Colors.black87,
+          // )),
           //bottom half
           Expanded(
               flex: 7,
-              child:DefaultTabController(
+              child: DefaultTabController(
                   length: 3,
                   child: Scaffold(
                     appBar: AppBar(
                       automaticallyImplyLeading: false,
                       title: const TabBar(
                         tabs: [
-                          Tab(text:'Information',),
-                          Tab(text:'Documents'),
-                          Tab(text:'Transport'),
+                          Tab(
+                            text: 'Information',
+                          ),
+                          Tab(text: 'Documents'),
+                          Tab(text: 'Transport'),
                         ],
                       ),
                     ),
-                    body: TabBarView(
-                        children: [
-                          printInformation(data),
-                          Center(child: Text('2')),
-                          Center(child: Text('3')),
-                        ]
-                    ),
-                  )
-              )
-          ),
+                    body: TabBarView(children: [
+                      printInformation(data),
+                      UploadFile(),
+                      Center(child: Text('3')),
+                    ]),
+                  ))),
         ],
       ),
     );

@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
       ),
       //extended floating action button
       floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue,
         spaceBetweenChildren: 10,
         spacing: 10,
         icon: Icons.add,
@@ -79,16 +80,13 @@ class _HomePageState extends State<HomePage> {
       ),
       body: <Widget>[
         OverviewOfTrips(),
-        ProfileSetting(),
-        // IndividualTrip(),
+        OverviewOfBudget(),
         OverviewOfBudget(),
         Profile()
       ][currentPageIndex],
     );
-
   }
 }
-
 
 //navigate to create trip
 void _navigateToCreateTrip(context) {
