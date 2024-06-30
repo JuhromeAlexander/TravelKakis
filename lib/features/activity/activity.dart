@@ -5,6 +5,9 @@ class activity {
   String activityTitle;
   String activityTime;
   DocumentSnapshot documentSnapshot;
+  String documentID;
+  String tripID;
+  DocumentReference activityDocumentReference;
   String? activityCost;
   String? activityDate;
   String? activityDuration;
@@ -16,6 +19,9 @@ class activity {
     required this.activityTitle,
     required this.activityTime,
     required this.documentSnapshot,
+    required this.documentID,
+    required this.tripID,
+    required this.activityDocumentReference,
     this.activityCost,
     this.activityDate,
     this.activityDuration,
@@ -24,6 +30,18 @@ class activity {
     this.activityWebsite,
   });
   //
+
+  DocumentReference getActivityDocumentReference() {
+    return activityDocumentReference;
+  }
+
+  String getTripID() {
+    return tripID;
+  }
+
+  String getDocumentID() {
+    return documentID;
+  }
 
   DocumentSnapshot getDocumentSnapshot() {
     return documentSnapshot;

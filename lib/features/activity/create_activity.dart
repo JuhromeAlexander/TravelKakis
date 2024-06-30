@@ -1,21 +1,22 @@
+//import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:travel_kakis/utils/user_information.dart' as user_info;
+import 'package:flutter/services.dart';
 
 class CreateActivity extends StatefulWidget {
+  //document snapshot of trip
   final DocumentSnapshot documentSnapshot;
+  Function callback;
 
-  CreateActivity({super.key, required this.documentSnapshot});
+  CreateActivity({super.key, required this.documentSnapshot, required this.callback});
 
   @override
   _CreateActivityState createState() => _CreateActivityState();
 }
 
 class _CreateActivityState extends State<CreateActivity> {
+
+
   final _activityTitleController = TextEditingController();
   final _activityDateController = TextEditingController();
   final _activityDescriptionController = TextEditingController();
@@ -27,7 +28,7 @@ class _CreateActivityState extends State<CreateActivity> {
   final _activityWebsiteController = TextEditingController();
 
   //to write data
-  void addData() async {
+  void addData(BuildContext context) async {
     CollectionReference activity =
         FirebaseFirestore.instance.collection('activity');
 
@@ -41,12 +42,16 @@ class _CreateActivityState extends State<CreateActivity> {
       'time': _activityTimeController.text,
       'title': _activityTitleController.text,
       'website': _activityWebsiteController.text,
+      'tripID': widget.documentSnapshot.id.toString()
     }).then((value) {
       widget.documentSnapshot.reference.update({
         'activities': FieldValue.arrayUnion([value]),
       });
     });
 
+    // widget.callback();
+
+    Navigator.pop(context);
   }
 
 //Calendar
@@ -153,6 +158,7 @@ class _CreateActivityState extends State<CreateActivity> {
                   Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         controller: _activityDurationController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -177,6 +183,7 @@ class _CreateActivityState extends State<CreateActivity> {
                   Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: TextField(
+
                         controller: _activityPhoneController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -200,7 +207,7 @@ class _CreateActivityState extends State<CreateActivity> {
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
-                      onPressed: addData,
+                      onPressed: () => addData(context),
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
