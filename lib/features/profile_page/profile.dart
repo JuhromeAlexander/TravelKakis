@@ -65,11 +65,13 @@ class _profileState extends State<Profile> {
                         fontSize: 20,
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {setState(() {
-
-                        }); },
-                        child: Text('Refresh'))
+                    // ElevatedButton(
+                    //     onPressed:
+                    //         () {setState(() {
+                    //
+                    //     }); },
+                    //     child: Text('Refresh')
+                    // )
                   ],
                 ),
               ),

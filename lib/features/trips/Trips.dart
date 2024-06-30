@@ -7,6 +7,7 @@ class Trips {
   final String tripLocation;
   final List activitiy_list;
   final DocumentSnapshot documentSnapshot;
+  final DocumentReference tripDocumentReference;
 
   Trips( {
     required this.tripTitle,
@@ -14,8 +15,13 @@ class Trips {
     required this.tripStartDate,
     required this.tripLocation,
     required this.activitiy_list,
-    required this.documentSnapshot
+    required this.documentSnapshot,
+    required this.tripDocumentReference
   });
+
+  DocumentReference getTripDocumentReference() {
+    return this.tripDocumentReference;
+  }
 
   DocumentSnapshot getDocumentSnapshot() {
     return this.documentSnapshot;
@@ -40,5 +46,6 @@ class Trips {
   String getTripLocation() {
     return tripLocation;
   }
+
 
 }

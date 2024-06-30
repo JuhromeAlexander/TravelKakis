@@ -13,11 +13,10 @@ class OverviewOfTrips extends StatefulWidget {
 }
 
 class _OverviewOfTripsState extends State<OverviewOfTrips> {
-  //to Delete
 
-  //to setState
-  callback() {
-    setState(() {});
+  overviewTripCallback() {
+    setState(() {
+    });
   }
 
   //TODO: I don't think this is the most efficient way to do it
@@ -30,6 +29,7 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     //to grab the correct trip that belongs to the user
     CollectionReference user = FirebaseFirestore.instance.collection('users');
     DocumentReference specificUser = user.doc(user_info.getID());
+
     await specificUser.get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
       reflength = data['trips'].length;
@@ -40,6 +40,7 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
       await tripDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         tripList.add(Trips(
+          tripDocumentReference: tripDoc[i],
             tripStartDate: data['tripStartDate'].toString(),
             tripEndDate: data['tripEndDate'].toString(),
             tripLocation: data['tripLocation'].toString(),
@@ -51,38 +52,52 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     return tripList;
   }
 
+  //return the DateTime format
+  DateTime returnDate(String date) {
+
+    DateTime dateFormat = DateTime(
+        int.parse(date.split('-')[0]),
+        int.parse(date.split('-')[1]),
+        int.parse(date.split('-')[2]));
+
+    return dateFormat;
+  }
+
   _individualTile(context, data) {
     return ListView.separated(
         itemBuilder: (context, index) {
           return ListTile(
-              trailing: PopupMenuButton<int>(
-                  onSelected: (value) {},
-                  itemBuilder: (BuildContext context) {
-                    // Define the menu items for the PopupMenuButton
-                    return const <PopupMenuEntry<int>>[
-                      PopupMenuItem<int>(
-                        value: 0,
-                        child: Text("Delete"),
-                      ),
-                    ];
-                  }),
-              onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>
-                          IndividualTrip(
-                            activities: data[index].getActivityList(),
-                            tripTitle: data[index].getTripTitle(),
-                            documentSnapshot: data[index]
-                                .getDocumentSnapshot(),
-                          )),
-                    );
-              },
-              title: Text(data[index].getTripTitle()),
-              subtitle: Text(
-                  '${data[index].getTripLocation()} - ${data[index]
-                      .getTripStartDate()} to ${data[index]
-                      .getTripEndDate()}'),
+            trailing: PopupMenuButton<int>(
+                onSelected: (value) {},
+                itemBuilder: (BuildContext context) {
+                  // Define the menu items for the PopupMenuButton
+                  return const <PopupMenuEntry<int>>[
+                    PopupMenuItem<int>(
+                      value: 0,
+                      child: Text("Delete"),
+                    ),
+                  ];
+                }),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => IndividualTrip(
+                          activities: data[index].getActivityList(),
+                          tripTitle: data[index].getTripTitle(),
+                          tripDocumentSnapshot: data[index].getDocumentSnapshot(),
+                          endDate: returnDate(data[index].getTripEndDate()),
+                      overviewTripCallback: overviewTripCallback,
+                          startDate: returnDate(data[index].getTripStartDate()),
+                        )),
+              );
+            },
+            title: Text(
+              data[index].getTripTitle(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+                '${data[index].getTripLocation()} - ${data[index].getTripStartDate()} to ${data[index].getTripEndDate()}'),
           );
         },
         separatorBuilder: (context, index) {
@@ -99,8 +114,7 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
           //if there's data, show it
           if (snapshot.hasData) {
             List data = snapshot.data;
-            return Flexible(child: _individualTile(context, data)
-                );
+            return Flexible(child: _individualTile(context, data));
             //no data
           }
           if (!snapshot.hasData) {
@@ -120,14 +134,6 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
       body: Column(
         children: <Widget>[
           printCard(),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {});
-              },
-              // onPressed: () {
-              //   setState(() {
-              // }); },
-              child: Text('Refresh'))
         ],
       ),
     );

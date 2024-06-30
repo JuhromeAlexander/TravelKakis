@@ -4,9 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
+import 'package:travel_kakis/features/trips/overview_of_trips.dart' as overview_trips;
 
 class CreateTrip extends StatefulWidget {
-  CreateTrip({super.key});
+  //final Function callback;
+  CreateTrip({
+    super.key,
+    //required this.callback
+  });
 
   @override
   _CreateTripState createState() => _CreateTripState();
@@ -19,12 +24,12 @@ class _CreateTripState extends State<CreateTrip> {
   final _endDateController = TextEditingController();
   final _collaborationsController = TextEditingController();
 
-
   //to write data
   void addData() async {
     CollectionReference trips = FirebaseFirestore.instance.collection('trips');
     CollectionReference user = FirebaseFirestore.instance.collection('users');
 
+    //TODO: update this part to also create an array
 
     //adding the trip to the database
     await trips.add({
@@ -33,13 +38,15 @@ class _CreateTripState extends State<CreateTrip> {
       'tripLocation': _tripLocationController.text,
       'tripStartDate': _startDateController.text,
       'tripTitle': _tripTitleController.text,
-    }).then( (value) {
+      'activities': <DocumentReference>[]
+    }).then((value) {
       //adding this trip ID to the user ID as well
       user.doc(user_info.getID()).update({
         // 'trips': FieldValue.arrayUnion(['trips/${value.id}']),
         'trips': FieldValue.arrayUnion([value]),
       });
     });
+
 
   }
 
@@ -49,16 +56,14 @@ class _CreateTripState extends State<CreateTrip> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
-        lastDate: DateTime(2100)
-    );
+        lastDate: DateTime(2100));
 
     if (datePicked != null) {
       setState(() {
-      controller.text = datePicked.toString().split(' ')[0];
+        controller.text = datePicked.toString().split(' ')[0];
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +140,7 @@ class _CreateTripState extends State<CreateTrip> {
                         onTap: () {
                           _selectDate(context, _endDateController);
                         },
-                      )
-                  ),
+                      )),
                   //collaborators
                   Padding(
                       padding: EdgeInsets.only(top: 20.0),
@@ -172,4 +176,3 @@ class _CreateTripState extends State<CreateTrip> {
     );
   }
 }
-

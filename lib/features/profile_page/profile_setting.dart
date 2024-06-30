@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:travel_kakis/features/profile_page/profile.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class ProfileSetting extends StatefulWidget {
   final Function callback;
@@ -16,21 +16,35 @@ class ProfileSetting extends StatefulWidget {
 }
 
 class _ProfileSettingState extends State<ProfileSetting> {
-  final nameController = TextEditingController();
+  final nameController = TextEditingController(text: user_info.getUsername());
   final emailController = TextEditingController();
 
-  void updateProfile() async {
-    CollectionReference userRef =  await FirebaseFirestore.instance.collection('users');
-    
+  void updateProfile(context) async {
+    CollectionReference userRef =
+        await FirebaseFirestore.instance.collection('users');
+
     await userRef.doc(user_info.getID()).update({
       'name': nameController.text,
-      'email': emailController.text
     });
+    // .update({'name': nameController.text, 'email': emailController.text});
 
-    user_info.setEmail(emailController.text);
+    // user_info.setEmail(emailController.text);
     user_info.setUsername(nameController.text);
 
     widget.callback();
+
+    //go back to profile page
+    _profileUpdated(context);
+  }
+
+  //a toast to tell user that the profile information has been updated
+  void _profileUpdated(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      const SnackBar(
+        content: Text("Profile updated!"),
+      ),
+    );
   }
 
   @override
@@ -50,33 +64,33 @@ class _ProfileSettingState extends State<ProfileSetting> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: TextField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                          hintText: 'Name',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
+                        borderRadius: BorderRadius.circular(10.0),
                       )),
-                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: TextField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                          hintText: 'Email',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      )),
+                      controller: nameController,
+                    ),
+                  ),
+                  //this is for email
+                  // Padding(
+                  //     padding: const EdgeInsets.only(top: 30.0),
+                  //     child: TextField(
+                  //       controller: emailController,
+                  //       decoration: const InputDecoration(
+                  //         enabledBorder: OutlineInputBorder(
+                  //             borderSide: BorderSide(color: Colors.grey)),
+                  //         hintText: 'Email',
+                  //         hintStyle: TextStyle(color: Colors.grey),
+                  //       ),
+                  //     )),
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        updateProfile();
+                        updateProfile(context);
                       },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -93,4 +107,12 @@ class _ProfileSettingState extends State<ProfileSetting> {
           )
         ]));
   }
+}
+
+//navigate back to the profile page
+void _navigateToProfilePage(context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Profile()),
+  );
 }
