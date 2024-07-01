@@ -15,7 +15,7 @@ If it is your first time testing Android Applications through an APK, ensure the
 
 
 2. Download the APK based on your device's architecture [here](https://github.com/JuhromeAlexander/TravelKakis/tree/main/build/app/outputs/flutter-apk). The following are the information regarding the files:
-    - app-release.apk - For General Download if you are Unsure of Yout System Specifications
+    - app-release.apk - For General Download if you are Unsure of Your System Specifications
     - app-arm64-v8a-release.apk - For arm64 Architecture
     - app-armeabi-v7a-release.apk - For arm and x86 Architecture
     - app-x86_64-release.apk - For x86_64 Architecture
