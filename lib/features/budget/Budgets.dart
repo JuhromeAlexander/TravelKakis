@@ -2,65 +2,74 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Budgets {
-
-  final String budgetTitle;
-  final String budgetStartDate;
-  final String budgetEndDate;
-  final int totalBudget;
-  final int budgetSpent;
-  final int budgetRemaining;
-  final int budgetCardIndicatorValue;
-  final Color budgetStatusColor;
-  final List expensesList;
-  final List categoryList;
+  final String? budgetTitle;
+  final String? budgetStartDate;
+  final String? budgetEndDate;
+  final int? totalBudget;
+  final int? budgetSpent;
+  final int? budgetRemaining;
+  final double? budgetCardIndicatorValue;
+  final String? budgetStatusColor;
+  final List? expensesList;
+  final List? categoryList;
+  final List? budgetList;
 
   Budgets({
-    required this.budgetTitle,
-    required this.budgetStartDate,
-    required this.budgetEndDate,
-    required this.totalBudget,
-    required this.budgetSpent,
-    required this.budgetRemaining,
-    required this.budgetCardIndicatorValue,
-    required this.budgetStatusColor,
-    required this.expensesList,
-    required this.categoryList
+    this.budgetTitle,
+    this.budgetStartDate,
+    this.budgetEndDate,
+    this.totalBudget,
+    this.budgetSpent,
+    this.budgetRemaining,
+    this.budgetCardIndicatorValue,
+    this.budgetStatusColor,
+    this.expensesList,
+    this.categoryList,
+    this.budgetList
   });
 
-  Color getBudgetStatusColor() {
+  String? getBudgetStatusColor() {
     return budgetStatusColor;
   }
 
-  String getBudgetTitle() {
+  String? getBudgetTitle() {
     return budgetTitle;
   }
 
-  String getBudgetStartDate() {
+  String? getBudgetStartDate() {
     return budgetStartDate;
   }
 
-  String getBudgetEndDate() {
+  String? getBudgetEndDate() {
     return budgetEndDate;
   }
 
-  int getBudgetSpent() {
+  int? getTotalBudget() {
+    return totalBudget;
+  }
+
+  int? getBudgetSpent() {
     return budgetSpent;
   }
 
-  int getBudgetRemaining() {
+  int? getBudgetRemaining() {
     return budgetRemaining;
   }
 
-  int getBudgetCardIndicatorValue() {
+  double? getBudgetCardIndicatorValue() {
     return budgetCardIndicatorValue;
   }
 
-  List getCategoryList() {
+  List? getCategoryList() {
     return categoryList;
   }
 
-  List getExpensesList() {
+  List? getExpensesList() {
     return expensesList;
+  }
+
+  List? getBudgetsList() {
+    return budgetList;
   }
 
 }

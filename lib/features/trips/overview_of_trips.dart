@@ -39,6 +39,8 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     for (int i = 0; i < reflength; i++) {
       await tripDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print(data);
+        print(i);
         tripList.add(Trips(
           tripDocumentReference: tripDoc[i],
             tripStartDate: data['tripStartDate'].toString(),
@@ -49,6 +51,7 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
             activitiy_list: data['activities']));
       });
     }
+    print(tripList);
     return tripList;
   }
 

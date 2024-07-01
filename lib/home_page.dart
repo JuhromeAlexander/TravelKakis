@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_kakis/features/budget/create_budget.dart';
 import 'package:travel_kakis/features/budget/overview_of_budget.dart';
 import 'package:travel_kakis/features/profile_page/profile.dart';
 import 'package:travel_kakis/features/profile_page/profile_setting.dart';
+import 'package:travel_kakis/features/suggestions/overview_of_suggestions.dart';
 import 'package:travel_kakis/temp_for_add.dart';
 import 'package:travel_kakis/utils/bottom_navigation.dart';
 import 'package:travel_kakis/features/trips/overview_of_trips.dart';
@@ -68,7 +70,9 @@ class _HomePageState extends State<HomePage> {
           SpeedDialChild(
               child: Icon(Icons.attach_money),
               label: 'Create budget',
-              onTap: (){}
+              onTap: (){
+                _navigateToCreateBudget(context);
+              }
           )
         ],
       ),
@@ -81,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       body: <Widget>[
         OverviewOfTrips(),
         OverviewOfBudget(),
-        OverviewOfBudget(),
+        OverviewOfSuggestions(),
         Profile()
       ][currentPageIndex],
     );
@@ -93,5 +97,12 @@ void _navigateToCreateTrip(context) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => CreateTrip()),
+  );
+}
+
+void _navigateToCreateBudget(context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => CreateBudget()),
   );
 }

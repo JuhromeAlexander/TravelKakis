@@ -1,44 +1,65 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 import '../../models/Categories.dart';
 import '../trips/Trips.dart';
+import 'define_budget.dart';
 
 class CreateBudget extends StatefulWidget {
-  CreateBudget({super.key})
+  CreateBudget({super.key});
 
   @override
   _CreateBudgetState createState() => _CreateBudgetState();
 }
 
 class _CreateBudgetState extends State<CreateBudget> {
-
-  String? _selectedTrip;
-  List<Trips> _trips = [];
-  List<Categories> _categories = [];
-  List<Categories> _selectedCategories = [];
+  Trips? _selectedTrip;
+  // List _trips = [];
+  // List _categories = [];
+  List _selectedCategories = [];
 
   final TextEditingController _tripController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _budgetNameController = TextEditingController();
+  final TextEditingController _totalBudgetController = TextEditingController();
 
   //Writing Data
   void addData() async {
-    CollectionReference budgets = FirebaseFirestore.instance.collection('budgets');
+    CollectionReference budgets =
+        FirebaseFirestore.instance.collection('budget');
     CollectionReference user = FirebaseFirestore.instance.collection('users');
-  }
 
-  Future<List<Trips>> fetchTripsData() async {
-    List<Trips> trips = await getTripData();
-    setState(() {
-      _trips = trips;
+    await budgets.add({
+      'budgetTitle': _budgetNameController.text,
+      'budgetStartDate': _selectedTrip?.getTripStartDate(),
+      'budgetEndDate': _selectedTrip?.getTripEndDate(),
+      'totalBudget': _totalBudgetController.text,
+      'budgetStatusColor': "Colors.green",
+      'categoryList': _selectedCategories
+    }).then((value) {
+      //Add BudgetID to UserID as well
+      user.doc(user_info.getID()).update({
+        'budgets': FieldValue.arrayUnion([value]),
+      });
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => DefineBudget(categories: _selectedCategories, budgetUID: value))
+      );
     });
-
-    return _trips;
   }
+
+  // Future<List<Trips>> fetchTripsData() async {
+  //   List trips = await getTripData();
+  //   setState(() {
+  //     _trips = trips;
+  //   });
+  //
+  //   return _trips;
+  // }
 
   Future<List<Trips>> getTripData() async {
     List tripDoc = [];
@@ -64,11 +85,34 @@ class _CreateBudgetState extends State<CreateBudget> {
             tripLocation: data['tripLocation'].toString(),
             tripTitle: data['tripTitle'].toString(),
             documentSnapshot: doc,
-            activitiy_list: data['activities']));
+            activitiy_list: data['activities'],
+            tripDocumentReference: null));
       });
     }
     return tripList;
   }
+
+  Future<List> getCategoryData() async {
+    List categoryList = [];
+
+    CollectionReference categoryRef =
+        FirebaseFirestore.instance.collection('categories');
+    QuerySnapshot querySnapshot = await categoryRef.get();
+
+    categoryList =
+        querySnapshot.docs.map((doc) => doc.get('categoryName')).toList();
+
+    return categoryList;
+  }
+
+  // Future<List> fetchCategoryData() async {
+  //   List categories = await getCategoryData();
+  //   setState(() {
+  //     _categories = categories;
+  //   });
+  //
+  //   return _categories;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,102 +121,76 @@ class _CreateBudgetState extends State<CreateBudget> {
       appBar: AppBar(
         title: const Text('Create Budget'),
       ),
-      body: Stack(
-        children: [
-          Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30.0,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //Budget Name
-                  Padding(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: TextField(
-                      controller: _budgetNameController,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)
-                        ),
-                        hintText: 'Budget Name',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
+      body: Container(
+        padding: EdgeInsets.all(10.0),
+        child: FutureBuilder(
+            future: Future.wait([getTripData(), getCategoryData()]),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasData) {
+                List<Trips> tripData = snapshot.data[0];
+                List categoryData = snapshot.data[1];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: TextField(
+                        controller: _budgetNameController,
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          hintText: 'Budget Name',
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: FutureBuilder<List>(
-                      future: fetchTripsData(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          List data = snapshot.data;
-                          return DropdownMenu(
-                            initialSelection: 'Select Trip',
-                            controller: _tripController,
-                            label: const Text('Trip'),
-                            dropdownMenuEntries: _trips.map<DropdownMenuEntry<Trips>>(
-                                (Trips trip) {
-                                  return DropdownMenuEntry<Trips>(
-                                    value: trip,
-                                    label: trip.tripTitle
-                                  );
-                                }
-                            ).toList(),
-                          );
-                        }
-                        if (!snapshot.hasData) {
-                          return const Text('No Trips, add some!');
-                        }
-                        if (snapshot.hasError) {
-                          return Text('Error Loading trips ${snapshot.error.toString()}');
-                        }
-                        return CircularProgressIndicator();
-                      },
+                    Padding(
+                      padding: EdgeInsets.only(top: 30.0),
+                      child: DropdownMenu(
+                        controller: _tripController,
+                        label: Text('Select Trip'),
+                        onSelected: (value) {
+                          setState(() {
+                            _selectedTrip = value;
+                          });
+                        },
+                        dropdownMenuEntries: tripData.map((trip) {
+                          return DropdownMenuEntry<Trips>(
+                              value: trip, label: trip.tripTitle);
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: FutureBuilder<List>(
-                      future: fetchCategoryData(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          List data = snapshot.data;
-                          return MultiSelectDialog(
-                            items: ,
-                            initialValue: ,
-                          );
-                        }
-                      },
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: MultiSelectDialogField(
+                          title: const Text('Select Categories'),
+                          items: categoryData.map((category) {
+                            return MultiSelectItem(category, category);
+                          }).toList(),
+                          onConfirm: (values) {
+                            _selectedCategories = values;
+                          },
+                        ),
+                        //child: Text(categoryData.toString()),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+                    ElevatedButton(
+                      onPressed: addData,
+                      child: const Text('Create')
+                    ),
+                  ],
+                );
+              }
+              return Text("Oops You Should Not be Seeing This");
+            }),
       ),
     );
-  }
-
-  Future<List> getCategoryData() async {
-    List<Categories> categoryList = [];
-    int refLength = 0;
-
-    CollectionReference categoryRef = FirebaseFirestore.instance.collection('categories');
-    QuerySnapshot querySnapshot = await categoryRef.get();
-
-    final allCategories = querySnapshot.docs.map((doc) => doc.data()).toList();
-
-    return allCategories;
-  }
-
-  Future<List> fetchCategoryData() async {
-
   }
 }
