@@ -6,17 +6,22 @@ import 'package:flutter/services.dart';
 class CreateActivity extends StatefulWidget {
   //document snapshot of trip
   final DocumentSnapshot documentSnapshot;
+
+  //the date of the current selected
+  final DateTime startDate;
   Function callback;
 
-  CreateActivity({super.key, required this.documentSnapshot, required this.callback});
+  CreateActivity(
+      {super.key,
+      required this.documentSnapshot,
+      required this.startDate,
+      required this.callback});
 
   @override
   _CreateActivityState createState() => _CreateActivityState();
 }
 
 class _CreateActivityState extends State<CreateActivity> {
-
-
   final _activityTitleController = TextEditingController();
   final _activityDateController = TextEditingController();
   final _activityDescriptionController = TextEditingController();
@@ -50,7 +55,6 @@ class _CreateActivityState extends State<CreateActivity> {
     });
 
     // widget.callback();
-
     Navigator.pop(context);
   }
 
@@ -58,7 +62,7 @@ class _CreateActivityState extends State<CreateActivity> {
   Future<void> _selectDate(context, controller) async {
     DateTime? datePicked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: widget.startDate,
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
@@ -69,6 +73,24 @@ class _CreateActivityState extends State<CreateActivity> {
     }
   }
 
+  //picking the time
+  Future<void> _selectTime(context, controller) async {
+    final TimeOfDay? selectedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+              child: child!);
+        });
+
+    if (selectedTime != null)
+      setState(() {
+        controller.text = selectedTime?.format(context);
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +99,7 @@ class _CreateActivityState extends State<CreateActivity> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -89,7 +111,7 @@ class _CreateActivityState extends State<CreateActivity> {
                 children: <Widget>[
                   //Title
                   Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
                         controller: _activityTitleController,
                         decoration: const InputDecoration(
@@ -100,7 +122,7 @@ class _CreateActivityState extends State<CreateActivity> {
                         ),
                       )),
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityDateController,
                         decoration: const InputDecoration(
@@ -115,23 +137,30 @@ class _CreateActivityState extends State<CreateActivity> {
                           _selectDate(context, _activityDateController);
                         },
                       )),
-                  //Location
+                  //Description
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: SizedBox(
+                      height: 200, //     <-- TextField expands to this height.
                       child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        style: TextStyle(height: 5),
                         controller: _activityDescriptionController,
+                        maxLines: null,
+                        // Set this
+                        expands: true,
+                        // and this
+                        keyboardType: TextInputType.multiline,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Description',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
+
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityCostController,
                         decoration: const InputDecoration(
@@ -141,11 +170,13 @@ class _CreateActivityState extends State<CreateActivity> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
-                  //Start date
-
+                  // date
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
+                        readOnly: true,
+                        onTap: () =>
+                            _selectTime(context, _activityTimeController),
                         controller: _activityTimeController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -156,7 +187,7 @@ class _CreateActivityState extends State<CreateActivity> {
                       )),
 
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: _activityDurationController,
@@ -167,10 +198,9 @@ class _CreateActivityState extends State<CreateActivity> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
-                  //End date
                   //collaborators
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityLocationController,
                         decoration: const InputDecoration(
@@ -180,10 +210,10 @@ class _CreateActivityState extends State<CreateActivity> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
-                  Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: TextField(
 
+                  Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: TextField(
                         controller: _activityPhoneController,
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -192,8 +222,9 @@ class _CreateActivityState extends State<CreateActivity> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
+
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityWebsiteController,
                         decoration: const InputDecoration(
@@ -205,7 +236,7 @@ class _CreateActivityState extends State<CreateActivity> {
                       )),
 
                   Container(
-                    margin: const EdgeInsets.only(top: 20.0),
+                    margin: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: ElevatedButton(
                       onPressed: () => addData(context),
                       style: ElevatedButton.styleFrom(

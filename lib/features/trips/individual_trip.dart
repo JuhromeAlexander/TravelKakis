@@ -29,7 +29,7 @@ class IndividualTrip extends StatefulWidget {
 class _IndividualTripState extends State<IndividualTrip> {
   //delete trip
   void _deleteCurrentActivity(String activityDocumentID, data, index) async {
-    //TODO: give warning when deleting
+    //TODO: give warning when deleting & delete
 
     //delete all the activites that is tagged to this trip
 
@@ -200,7 +200,6 @@ class _IndividualTripState extends State<IndividualTrip> {
   //get back the days for dropdown
   List<DateTime> getDays(DateTime start, DateTime end) {
     final days = end.difference(start).inDays;
-
     return [for (int i = 0; i <= days; i++) start.add(Duration(days: i))];
   }
 
@@ -218,7 +217,6 @@ class _IndividualTripState extends State<IndividualTrip> {
                 //set the current selected item to what the user pressed
                 currentItem = value.toString();
                 //re-set the data with the updated data
-                // _getData = getData(widget.activities);
                 _getData = getData();
                 //clear the activity list to be repopulated with what the user pressed
                 activities.clear();
@@ -235,11 +233,9 @@ class _IndividualTripState extends State<IndividualTrip> {
               MaterialPageRoute(
                   builder: (context) => CreateActivity(
                       documentSnapshot: widget.tripDocumentSnapshot,
+                      startDate: widget.startDate,
                       callback: callback)),
             ).then((_) => callback());
-
-            // _navigateToCreateActivity(
-            //     context, widget.documentSnapshot, callback);
           },
           shape: CircleBorder(),
           child: const Icon(Icons.add)),
