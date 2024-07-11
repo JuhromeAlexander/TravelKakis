@@ -39,8 +39,6 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
       final data = doc.data() as Map<String, dynamic>;
       refLength = data['budgets'].length;
       budgetDoc = data['budgets'];
-      print(data['budgets']);
-      print(refLength);
     });
 
     for (int i = 0; i < refLength; i++) {
@@ -59,8 +57,6 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         ));
       });
     }
-    print("hello");
-    print(budgetList);
     return budgetList;
   }
 
