@@ -107,15 +107,16 @@ class _CreateActivityState extends State<CreateActivity> {
                 horizontal: 30.0,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   //Title
                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: TextField(
                         controller: _activityTitleController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Title',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -125,9 +126,10 @@ class _CreateActivityState extends State<CreateActivity> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityDateController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.calendar_month),
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           labelText: 'Date',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -137,11 +139,28 @@ class _CreateActivityState extends State<CreateActivity> {
                           _selectDate(context, _activityDateController);
                         },
                       )),
+                  // date
+                  Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: TextField(
+                        readOnly: true,
+                        onTap: () =>
+                            _selectTime(context, _activityTimeController),
+                        controller: _activityTimeController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.alarm),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: Colors.grey)),
+                          labelText: 'Time',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      )),
                   //Description
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: SizedBox(
-                      height: 200, //     <-- TextField expands to this height.
+                      height: 150, //     <-- TextField expands to this height.
                       child: TextField(
                         controller: _activityDescriptionController,
                         maxLines: null,
@@ -149,8 +168,9 @@ class _CreateActivityState extends State<CreateActivity> {
                         expands: true,
                         // and this
                         keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Description',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -162,26 +182,13 @@ class _CreateActivityState extends State<CreateActivity> {
                   Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         controller: _activityCostController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Cost',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      )),
-                  // date
-                  Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: TextField(
-                        readOnly: true,
-                        onTap: () =>
-                            _selectTime(context, _activityTimeController),
-                        controller: _activityTimeController,
-                        decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                          hintText: 'Time',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       )),
@@ -191,8 +198,9 @@ class _CreateActivityState extends State<CreateActivity> {
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: _activityDurationController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Duration',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -203,8 +211,9 @@ class _CreateActivityState extends State<CreateActivity> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityLocationController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Location',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -215,8 +224,9 @@ class _CreateActivityState extends State<CreateActivity> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityPhoneController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Phone',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -227,8 +237,9 @@ class _CreateActivityState extends State<CreateActivity> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _activityWebsiteController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Website',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -240,12 +251,14 @@ class _CreateActivityState extends State<CreateActivity> {
                     child: ElevatedButton(
                       onPressed: () => addData(context),
                       style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(6), // <-- Radius
-                          ),
-                          minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Create'),
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6), // <-- Radius
+                        ),
+                        minimumSize: const Size(double.infinity, 40),
+                      ),
+                      child: const Text(
+                          style: TextStyle(color: Colors.white), 'Create'),
                     ),
                   )
                 ],
