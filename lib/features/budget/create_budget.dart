@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
-import '../../models/Categories.dart';
 import '../trips/Trips.dart';
 import 'define_budget.dart';
 
 class CreateBudget extends StatefulWidget {
-  CreateBudget({super.key});
+  const CreateBudget({super.key});
 
   @override
   _CreateBudgetState createState() => _CreateBudgetState();
@@ -122,12 +118,12 @@ class _CreateBudgetState extends State<CreateBudget> {
         title: const Text('Create Budget'),
       ),
       body: Container(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: FutureBuilder(
             future: Future.wait([getTripData(), getCategoryData()]),
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
               if (snapshot.hasData) {
                 List<Trips> tripData = snapshot.data[0];
@@ -136,7 +132,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: TextField(
                         controller: _budgetNameController,
                         decoration: const InputDecoration(
@@ -151,10 +147,10 @@ class _CreateBudgetState extends State<CreateBudget> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: DropdownMenu(
                         controller: _tripController,
-                        label: Text('Select Trip'),
+                        label: const Text('Select Trip'),
                         onSelected: (value) {
                           setState(() {
                             _selectedTrip = value;
@@ -168,7 +164,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 10.0),
+                        padding: const EdgeInsets.only(top: 10.0),
                         child: MultiSelectDialogField(
                           title: const Text('Select Categories'),
                           items: categoryData.map((category) {
@@ -188,7 +184,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                   ],
                 );
               }
-              return Text("Oops You Should Not be Seeing This");
+              return const Text("Oops You Should Not be Seeing This");
             }),
       ),
     );

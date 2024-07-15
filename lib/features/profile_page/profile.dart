@@ -1,7 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/profile_page/profile_setting.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 

@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 
 void main() async {
@@ -124,7 +123,7 @@ class _RegisterState extends State<Register> {
 
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               //enable scrolling in case phone size is small
@@ -147,7 +146,7 @@ class _RegisterState extends State<Register> {
 
                   //Email textbox
                   Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
                         //Not Sure Why this is giving me Errors, but i think may need your help to check
                         controller: emailController,
@@ -165,7 +164,7 @@ class _RegisterState extends State<Register> {
 
                   //Username
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                           controller: usernameController,
                           decoration: const InputDecoration(
@@ -181,7 +180,7 @@ class _RegisterState extends State<Register> {
 
                   //password
                   Padding(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: TextField(
                         controller: passwordController,
                         obscureText: true,

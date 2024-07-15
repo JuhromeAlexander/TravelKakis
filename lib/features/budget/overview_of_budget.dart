@@ -1,12 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/budget/individual_budget.dart';
-import 'package:travel_kakis/utils/bottom_navigation.dart';
-import 'package:travel_kakis/utils/budget_card.dart';
-import 'package:travel_kakis/utils/budget_card_test.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'package:travel_kakis/features/budget/Budgets.dart';
 
@@ -94,7 +88,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
             },
             title: Text(
               data[index].getBudgetTitle(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               data[index].getTotalBudget().toString(),
@@ -102,7 +96,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
           );
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return const Divider();
         },
         itemCount: data.length);
   }
@@ -123,7 +117,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         if (snapshot.hasError) {
           return Text('Error Loading Budgets ${snapshot.error.toString()}');
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       }
     );
   }

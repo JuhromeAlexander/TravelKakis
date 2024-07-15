@@ -120,13 +120,13 @@ class _IndividualActivityState extends State<IndividualActivity> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-              child: Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
+              child: const Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
           SpeedDialChild(
-              child: Icon(Icons.upload_file),
+              child: const Icon(Icons.upload_file),
               label: 'Upload file',
               onTap: () {}),
           SpeedDialChild(
-              child: Icon(Icons.info_sharp),
+              child: const Icon(Icons.info_sharp),
               label: 'Edit Information',
               onTap: () {}),
         ],
@@ -159,8 +159,8 @@ class _IndividualActivityState extends State<IndividualActivity> {
                     ),
                     body: TabBarView(children: [
                       printInformation(data),
-                      UploadFile(),
-                      Center(child: Text('3')),
+                      const UploadFile(),
+                      const Center(child: Text('3')),
                     ]),
                   ))),
         ],

@@ -1,9 +1,9 @@
-import 'dart:ffi';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BudgetCard extends StatelessWidget {
+  const BudgetCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -13,7 +13,7 @@ class BudgetCard extends StatelessWidget {
       ),
       color: Colors.blue,
       child: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -24,7 +24,7 @@ class BudgetCard extends StatelessWidget {
                   children: [
                     Text(
                       getBudgetCardTitle(),
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -34,13 +34,13 @@ class BudgetCard extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: getBudgetStatusColor(),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(20.0),
                         bottomLeft: Radius.circular(20.0),
                       ),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    child: Text(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    child: const Text(
                       'Status',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -48,25 +48,25 @@ class BudgetCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             LinearProgressIndicator(
               value: getBudgetCardIndicatorValue(),
               backgroundColor: Colors.grey[300],
               valueColor: AlwaysStoppedAnimation(Colors.grey[800]),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Spent:'),
+                const Text('Spent:'),
                 Text(getBudgetCardSpent()),
               ],
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Remaining:'),
+                const Text('Remaining:'),
                 Text(getBudgetCardRemaining()),
               ],
             ),

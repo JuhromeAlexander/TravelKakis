@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/budget/individual_budget.dart';
 
@@ -21,13 +20,13 @@ class DynamicCategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: new EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(categoryTitle),
           Padding(
-            padding: EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20.0),
             child: TextField(
               controller:  _categoryBudget,
               decoration: const InputDecoration(
@@ -68,7 +67,7 @@ class _DefineBudgetState extends State<DefineBudget> {
     });
 
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => IndividualBudget())
+        builder: (context) => const IndividualBudget())
     );
   }
 
@@ -86,7 +85,7 @@ class _DefineBudgetState extends State<DefineBudget> {
             child: ListView.builder(
                 itemCount: widget.categories.length,
                 itemBuilder: (_, index) {
-                  DynamicCategoryCard temp = new DynamicCategoryCard(categoryTitle: widget.categories[index]);
+                  DynamicCategoryCard temp = DynamicCategoryCard(categoryTitle: widget.categories[index]);
                   dynamicList.add(temp);
                   return temp;
                 }
@@ -94,7 +93,7 @@ class _DefineBudgetState extends State<DefineBudget> {
           ),
           ElevatedButton(
             onPressed: updateBudget,
-            child: Text('Create Budget'),
+            child: const Text('Create Budget'),
             //child: Text(widget.budgetUID),
           ),
         ],

@@ -1,16 +1,11 @@
-import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/budget/Budgets.dart';
-import 'package:travel_kakis/features/expenses/expense.dart';
-import 'package:travel_kakis/models/Categories.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 class CreateExpense extends StatefulWidget {
 
-  CreateExpense({super.key});
+  const CreateExpense({super.key});
 
   @override
   _CreateExpenseState createState() => _CreateExpenseState();
@@ -19,8 +14,8 @@ class CreateExpense extends StatefulWidget {
 class _CreateExpenseState extends State<CreateExpense> {
   Budgets? _selectedBudget;
   List expenseType = ['Income', 'Expense'];
-  late String? _selectedCategory;
-  late String? _selectedExpenseType;
+  String? _selectedCategory;
+  String? _selectedExpenseType;
 
   final TextEditingController _expenseNameController = TextEditingController();
   final TextEditingController _expenseDescController = TextEditingController();
@@ -60,14 +55,15 @@ class _CreateExpenseState extends State<CreateExpense> {
     //Grab Budgets Belonging to User
     CollectionReference user = FirebaseFirestore.instance.collection('users');
     DocumentReference specificUser = user.doc(user_info.getID());
-
+    print('In Budget List - Define Collection');
     await specificUser.get().then(
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
-          refLength = data['budget'].length;
-          budgetDoc = data['budget'];
+          refLength = data['budgets'].length;
+          budgetDoc = data['budgets'];
         }
     );
+    print('Got Specific User');
 
     for (int i = 0; i < refLength; i++) {
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
@@ -85,6 +81,7 @@ class _CreateExpenseState extends State<CreateExpense> {
         ));
       });
     }
+    print('Got BudgetList');
     return budgetList;
   }
 
@@ -94,12 +91,13 @@ class _CreateExpenseState extends State<CreateExpense> {
     CollectionReference categoryRef =
     FirebaseFirestore.instance.collection('categories');
 
-    QuerySnapshot querySnapshot = await categoryRef.where("categoryType", isEqualTo: "income").get();
+    QuerySnapshot querySnapshot = await categoryRef.where("categoryType", isEqualTo: "Income").get();
 
     categoryList = querySnapshot.docs.map(
         (doc) => doc.get('categoryName')
     ).toList();
 
+    print('Got Income CategoryList');
     return categoryList;
   }
 
@@ -109,12 +107,13 @@ class _CreateExpenseState extends State<CreateExpense> {
     CollectionReference categoryRef =
     FirebaseFirestore.instance.collection('categories');
 
-    QuerySnapshot querySnapshot = await categoryRef.where("categoryType", isEqualTo: "expense").get();
+    QuerySnapshot querySnapshot = await categoryRef.where("categoryType", isEqualTo: "Expense").get();
 
     categoryList = querySnapshot.docs.map(
             (doc) => doc.get('categoryName')
     ).toList();
-
+    print('Got Expense CategoryList');
+    print(categoryList);
     return categoryList;
   }
 
@@ -126,12 +125,10 @@ class _CreateExpenseState extends State<CreateExpense> {
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
-    if (datePicked != null) {
-      setState(() {
-        controller.text = datePicked.toString().split(' ')[0];
-      });
+    setState(() {
+      controller.text = datePicked.toString().split(' ')[0];
+    });
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +138,13 @@ class _CreateExpenseState extends State<CreateExpense> {
         title: const Text('Create Expense'),
       ),
       body: Container(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: FutureBuilder(
           future: Future.wait([getBudgetData(),getIncomeCategoryData(),getExpenseCategoryData()]),
           builder: (context, AsyncSnapshot snapshot) {
             if(!snapshot.hasData) {
-              return CircularProgressIndicator();
+              debugPrint('Testing has no data');
+              return const CircularProgressIndicator();
             }
             if (snapshot.hasData) {
               List<Budgets> budgetData = snapshot.data[0];
@@ -157,7 +155,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: TextField(
                       controller: _expenseNameController,
                       decoration:  const InputDecoration(
@@ -172,7 +170,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: TextField(
                       controller: _expenseDescController,
                       decoration:  const InputDecoration(
@@ -187,7 +185,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 30.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: TextField(
                       controller: _expenseCostController,
                       decoration:  const InputDecoration(
@@ -202,10 +200,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 30.0),
+                    padding: const EdgeInsets.only(top: 30.0),
                     child: DropdownMenu(
                       controller: _budgetController,
-                      label: Text('Select Budget'),
+                      label: const Text('Select Budget'),
                       onSelected: (value) {
                         setState(() {
                           _selectedBudget = value;
@@ -219,10 +217,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
                       controller: _expenseTypeController,
-                      label: Text('Select Expense Type'),
+                      label: const Text('Select Expense Type'),
                       onSelected: (value) {
                         setState(() {
                           _selectedExpenseType = value;
@@ -239,10 +237,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                   ),
                   _selectedExpenseType != 'Income'
                   ? Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
                       controller: _expenseCategoryController,
-                      label: Text('Select Category'),
+                      label: const Text('Select Category'),
                       initialSelection: _selectedCategory,
                       onSelected: (newValue) {
                         setState(() {
@@ -257,10 +255,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   )
                   : Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
                       controller: _expenseCategoryController,
-                      label: Text('Select Category'),
+                      label: const Text('Select Category'),
                       initialSelection: _selectedCategory,
                       onSelected: (newValue) {
                         setState(() {
@@ -275,7 +273,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: TextField(
                       controller: _expenseDateController,
                       decoration: const InputDecoration(
@@ -301,7 +299,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                 ],
               );
             }
-            return Text("You Should not Be Seeing This");
+            return const Text("You Should not Be Seeing This");
           }
         ),
       ),

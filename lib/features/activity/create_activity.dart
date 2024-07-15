@@ -1,7 +1,6 @@
 //import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CreateActivity extends StatefulWidget {
   //document snapshot of trip
@@ -66,12 +65,10 @@ class _CreateActivityState extends State<CreateActivity> {
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
-    if (datePicked != null) {
-      setState(() {
-        controller.text = datePicked.toString().split(' ')[0];
-      });
+    setState(() {
+      controller.text = datePicked.toString().split(' ')[0];
+    });
     }
-  }
 
   //picking the time
   Future<void> _selectTime(context, controller) async {
@@ -85,10 +82,11 @@ class _CreateActivityState extends State<CreateActivity> {
               child: child!);
         });
 
-    if (selectedTime != null)
+    if (selectedTime != null) {
       setState(() {
-        controller.text = selectedTime?.format(context);
+        controller.text = selectedTime.format(context);
       });
+    }
   }
 
   @override

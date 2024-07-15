@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class bottomNavigation extends StatelessWidget {
@@ -12,7 +10,7 @@ class bottomNavigation extends StatelessWidget {
   ValueChanged<int> onClicked;
 
   //constructor for bottom navigation
-  bottomNavigation({required this.currentIndex, required this.onClicked});
+  bottomNavigation({super.key, required this.currentIndex, required this.onClicked});
 
   @override
   Widget build(BuildContext context) {

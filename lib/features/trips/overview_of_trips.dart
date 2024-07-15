@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/trips/Trips.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_kakis/features/trips/individual_trip.dart';
@@ -97,14 +96,14 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
             },
             title: Text(
               data[index].getTripTitle(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
                 '${data[index].getTripLocation()} - ${data[index].getTripStartDate()} to ${data[index].getTripEndDate()}'),
           );
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return const Divider();
         },
         itemCount: data.length);
   }
@@ -127,7 +126,7 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
             return Text('Error loading trips ${snapshot.error.toString()}');
           }
           //when waiting to retrieve the data
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         });
   }
 

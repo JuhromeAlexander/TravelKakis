@@ -32,7 +32,7 @@ class _ForgetpasswordState extends State<Forgetpassword> {
 
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               //enable scrolling in case phone size is small

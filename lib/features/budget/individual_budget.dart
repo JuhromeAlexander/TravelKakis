@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IndividualBudget extends StatefulWidget {
@@ -57,10 +55,10 @@ class _IndividualBudgetState extends State<IndividualBudget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20.0),
             child: Row(
               children: [
-                Text(
+                const Text(
                   'Total Budget:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -68,7 +66,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 ),
                 Text(
                   widget.totalBudget.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -76,10 +74,10 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20.0),
             child: Row(
               children: [
-                Text(
+                const Text(
                   'Budget Remaining:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -87,7 +85,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 ),
                 Text(
                   widget.budgetRemaining.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -95,10 +93,10 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20.0),
             child: Row(
               children: [
-                Text(
+                const Text(
                   'Categories',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -106,7 +104,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 ),
                 Text(
                   widget.categoryList.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 )

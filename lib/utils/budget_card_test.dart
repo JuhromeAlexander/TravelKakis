@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class BudgetCardTest extends StatelessWidget {
+  const BudgetCardTest({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -43,7 +43,7 @@ class BudgetCardTest extends StatelessWidget {
                           valueColor: AlwaysStoppedAnimation(Colors.grey[800]),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -54,18 +54,18 @@ class BudgetCardTest extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15.0,
                   ),
                   Text(
                     getBudgetCardSpent(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
                   Text(
                     getBudgetCardRemaining(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
@@ -126,13 +126,13 @@ class BudgetCardTest extends StatelessWidget {
                   child: Container(
                       decoration: BoxDecoration(
                         color: getBudgetStatusColor(),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           //topRight: Radius.circular(20.0),
                           bottomLeft: Radius.circular(20.0),
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      child: Text(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: const Text(
                         'Status',
                         style: TextStyle(color: Colors.white),
                       ),

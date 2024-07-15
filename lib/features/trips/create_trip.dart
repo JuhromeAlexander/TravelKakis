@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
-import 'package:travel_kakis/features/trips/overview_of_trips.dart' as overview_trips;
 
 class CreateTrip extends StatefulWidget {
   //final Function callback;
-  CreateTrip({
+  const CreateTrip({
     super.key,
     //required this.callback
   });
@@ -58,12 +54,10 @@ class _CreateTripState extends State<CreateTrip> {
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
-    if (datePicked != null) {
-      setState(() {
-        controller.text = datePicked.toString().split(' ')[0];
-      });
+    setState(() {
+      controller.text = datePicked.toString().split(' ')[0];
+    });
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +67,7 @@ class _CreateTripState extends State<CreateTrip> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -85,7 +79,7 @@ class _CreateTripState extends State<CreateTrip> {
                 children: <Widget>[
                   //Title
                   Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
                         controller: _tripTitleController,
                         decoration: const InputDecoration(
@@ -97,7 +91,7 @@ class _CreateTripState extends State<CreateTrip> {
                       )),
                   //Location
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _tripLocationController,
                         decoration: const InputDecoration(
@@ -109,7 +103,7 @@ class _CreateTripState extends State<CreateTrip> {
                       )),
                   //Start date
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _startDateController,
                         decoration: const InputDecoration(
@@ -126,7 +120,7 @@ class _CreateTripState extends State<CreateTrip> {
                       )),
                   //End date
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _endDateController,
                         decoration: const InputDecoration(
@@ -143,7 +137,7 @@ class _CreateTripState extends State<CreateTrip> {
                       )),
                   //collaborators
                   Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _collaborationsController,
                         decoration: const InputDecoration(

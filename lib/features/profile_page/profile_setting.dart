@@ -1,7 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:travel_kakis/features/profile_page/profile.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +18,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
 
   void updateProfile(context) async {
     CollectionReference userRef =
-        await FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('users');
 
     await userRef.doc(user_info.getID()).update({
       'name': nameController.text,
@@ -54,7 +51,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
           title: const Text('Edit Profile'),
         ),
         body: Stack(children: <Widget>[
-          Container(
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -113,6 +110,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
 void _navigateToProfilePage(context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => Profile()),
+    MaterialPageRoute(builder: (context) => const Profile()),
   );
 }

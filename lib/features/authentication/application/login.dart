@@ -1,11 +1,5 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/authentication/application/Register.dart';
 import 'package:travel_kakis/features/authentication/application/forgot_password.dart';
@@ -15,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    MaterialApp(home: Login()),
+    const MaterialApp(home: Login()),
   );
   // runApp(const Login());
 }
@@ -77,7 +71,7 @@ class _LoginState extends State<Login> {
       backgroundColor: Colors.blueAccent,
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             // alignment: Alignment.topCenter,
             height: double.infinity,
             child: SingleChildScrollView(
@@ -100,7 +94,7 @@ class _LoginState extends State<Login> {
 
                   // const //email textfield
                   Padding(
-                      padding: EdgeInsets.only(top: 50.0),
+                      padding: const EdgeInsets.only(top: 50.0),
                       child: TextField(
                         controller: emailController,
                         decoration: const InputDecoration(
@@ -116,7 +110,7 @@ class _LoginState extends State<Login> {
 
                   //password textfield
                   Padding(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: TextField(
                         controller: passwordController,
                         obscureText: true,

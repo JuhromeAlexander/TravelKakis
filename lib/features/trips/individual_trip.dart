@@ -148,7 +148,7 @@ class _IndividualTripState extends State<IndividualTrip> {
 
                       // () => _showToast(context, currentActivityList[index].getActivityDocumentReference().toString()),
                       // value: ,
-                      child: Text("Delete"),
+                      child: const Text("Delete"),
                     ),
                   ];
                 }),
@@ -163,14 +163,14 @@ class _IndividualTripState extends State<IndividualTrip> {
             },
             title: Text(
               currentActivityList[index].getActivityTitle(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
                 '${currentActivityList[index].getActivityDate()}, ${currentActivityList[index].getActivityTime()}'),
           );
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return const Divider();
         },
         itemCount: currentActivityList.length);
   }
@@ -193,7 +193,7 @@ class _IndividualTripState extends State<IndividualTrip> {
             return Flexible(child: _individualTile(context, snapshot.data));
           }
           //when waiting to retrieve the data
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         });
   }
 
@@ -237,7 +237,7 @@ class _IndividualTripState extends State<IndividualTrip> {
                       callback: callback)),
             ).then((_) => callback());
           },
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           child: const Icon(Icons.add)),
       body: Column(
         children: <Widget>[
@@ -245,7 +245,7 @@ class _IndividualTripState extends State<IndividualTrip> {
           //bottom half
           Expanded(
               flex: 7,
-              child: Container(
+              child: SizedBox(
                   height: double.infinity,
                   child: Column(children: <Widget>[
                     printCard(_getData),

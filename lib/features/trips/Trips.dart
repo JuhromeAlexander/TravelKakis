@@ -20,11 +20,11 @@ class Trips {
   });
 
   DocumentReference? getTripDocumentReference() {
-    return this.tripDocumentReference;
+    return tripDocumentReference;
   }
 
   DocumentSnapshot getDocumentSnapshot() {
-    return this.documentSnapshot;
+    return documentSnapshot;
   }
 
   List getActivityList() {
