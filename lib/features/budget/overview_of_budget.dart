@@ -65,43 +65,6 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
     return dateFormat;
   }
 
-  // Widget _individualTile(context, data) {
-  //   return ListView.separated(
-  //       itemBuilder: (context, index) {
-  //         return ListTile(
-  //           onTap: () {
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                   builder: (context) => IndividualBudget(
-  //                       budgetTitle: data[index].getBudgetTitle(),
-  //                       budgetStartDate: returnDate(data[index].getBudgetStartDate()),
-  //                       budgetEndDate: returnDate(data[index].getBudgetEndDate()),
-  //                       totalBudget: data[index].getTotalBudget(),
-  //                       budgetSpent: data[index].getBudgetSpent(),
-  //                       budgetRemaining: data[index].getBudgetRemaining(),
-  //                       budgetCardIndicatorValue:
-  //                            data[index].getBudgetCardIndicatorValue(),
-  //                       budgetStatusColor: data[index].getBudgetStatusColor(),
-  //                       categoryList: data[index].getCategoryList()
-  //               )),
-  //             );
-  //           },
-  //           title: Text(
-  //             data[index].getBudgetTitle(),
-  //             style: const TextStyle(fontWeight: FontWeight.bold),
-  //           ),
-  //           subtitle: Text(
-  //             data[index].getTotalBudget().toString(),
-  //           ),
-  //         );
-  //       },
-  //       separatorBuilder: (context, index) {
-  //         return const Divider();
-  //       },
-  //       itemCount: data.length);
-  // }
-
   Widget _individualCard(context, data) {
     return ListView.separated(
         itemBuilder: (context, index) {
@@ -157,7 +120,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 8,
                                 child: LinearProgressIndicator(
-                                  value: getBudgetCardIndicatorValue(),
+                                  value: data[index].getBudgetCardIndicatorValue(),
                                   backgroundColor: Colors.grey[300],
                                   valueColor:
                                       AlwaysStoppedAnimation(Colors.grey[800]),
@@ -169,7 +132,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  getBudgetCardIndicatorValueText(),
+                                  data[index].getBudgetCardIndicatorValue().toString(),
                                 ),
                               ),
                             ],
@@ -178,13 +141,13 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                             height: 15.0,
                           ),
                           Text(
-                            getBudgetCardSpent(),
+                            data[index].getBudgetSpent().toString(),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
                           ),
                           Text(
-                            getBudgetCardRemaining(),
+                            data[index].getBudgetRemaining().toString(),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -214,7 +177,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  getBudgetCardTitle(),
+                                  data[index].getBudgetTitle(),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -223,7 +186,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  getBudgetCardStartDate(),
+                                  data[index].getBudgetStartDate(),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -232,7 +195,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  getBudgetCardEndDate(),
+                                  data[index].getBudgetEndDate(),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -245,7 +208,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                           flex: 1,
                           child: Container(
                             decoration: BoxDecoration(
-                                color: getBudgetStatusColor(),
+                                color: data[index].getBudgetStatusColor() == "Colors.green" ? Colors.green : Colors.red,
                                 borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(20.0),
                                 )),
@@ -281,6 +244,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             List data = snapshot.data;
+
             return Flexible(child: _individualCard(context, data));
           }
           if (!snapshot.hasData) {
@@ -291,38 +255,6 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
           }
           return const CircularProgressIndicator();
         });
-  }
-
-  Color getBudgetStatusColor() {
-    return Colors.green;
-  }
-
-  String getBudgetCardTitle() {
-    return 'Test Title';
-  }
-
-  double getBudgetCardIndicatorValue() {
-    return 0.7;
-  }
-
-  String getBudgetCardIndicatorValueText() {
-    return "70%";
-  }
-
-  String getBudgetCardSpent() {
-    return 'Test Spent';
-  }
-
-  String getBudgetCardRemaining() {
-    return 'Test Remaining';
-  }
-
-  String getBudgetCardStartDate() {
-    return "Test Start Date";
-  }
-
-  String getBudgetCardEndDate() {
-    return "Test End Date";
   }
 
   @override
