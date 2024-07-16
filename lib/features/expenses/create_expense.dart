@@ -55,7 +55,6 @@ class _CreateExpenseState extends State<CreateExpense> {
     //Grab Budgets Belonging to User
     CollectionReference user = FirebaseFirestore.instance.collection('users');
     DocumentReference specificUser = user.doc(user_info.getID());
-    print('In Budget List - Define Collection');
     await specificUser.get().then(
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
@@ -63,7 +62,6 @@ class _CreateExpenseState extends State<CreateExpense> {
           budgetDoc = data['budgets'];
         }
     );
-    print('Got Specific User');
 
     for (int i = 0; i < refLength; i++) {
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
@@ -81,7 +79,6 @@ class _CreateExpenseState extends State<CreateExpense> {
         ));
       });
     }
-    print('Got BudgetList');
     return budgetList;
   }
 
@@ -89,7 +86,7 @@ class _CreateExpenseState extends State<CreateExpense> {
     List categoryList = [];
 
     CollectionReference categoryRef =
-    FirebaseFirestore.instance.collection('categories');
+      FirebaseFirestore.instance.collection('categories');
 
     QuerySnapshot querySnapshot = await categoryRef.where("categoryType", isEqualTo: "Income").get();
 
@@ -97,7 +94,6 @@ class _CreateExpenseState extends State<CreateExpense> {
         (doc) => doc.get('categoryName')
     ).toList();
 
-    print('Got Income CategoryList');
     return categoryList;
   }
 
@@ -112,8 +108,6 @@ class _CreateExpenseState extends State<CreateExpense> {
     categoryList = querySnapshot.docs.map(
             (doc) => doc.get('categoryName')
     ).toList();
-    print('Got Expense CategoryList');
-    print(categoryList);
     return categoryList;
   }
 

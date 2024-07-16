@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 class IndividualBudget extends StatefulWidget {
   final String? budgetTitle;
@@ -31,18 +33,23 @@ class IndividualBudget extends StatefulWidget {
 class _IndividualBudgetState extends State<IndividualBudget> {
   // Reading the Data from Budget Collection
 
-  // Future<List> getExpensesData(List expensesData) async {
-  //   int expensesLength = expensesData.length;
-  //
-  //   for (int i = 0; i < expensesLength; i++) {
-  //     await expensesData[i].get().then((DocumentSnapshot doc) {
-  //       if (doc.exists) {
-  //         final data = doc.data() as Map<Expenses, Expenses>;
-  //         expenses.add()
-  //       }
-  //     });
-  //   }
-  // }
+  Future<List> getExpensesData() async {
+    List expenseList = [];
+
+    CollectionReference expenseRef = 
+      FirebaseFirestore.instance.collection('expenses');
+    QuerySnapshot querySnapshot = 
+      await expenseRef
+          .where('userName', isEqualTo: user_info.getUsername())
+          .where('budgetName', isEqualTo: widget.budgetTitle.toString())
+          .get();
+    
+    expenseList = querySnapshot.docs.map(
+        (doc) => doc.data()
+    ).toList();
+
+    return expenseList;
+  }
 
   @override
   Widget build(BuildContext context) {
