@@ -1,10 +1,14 @@
 class Categories {
   final String categoryName;
   final String categoryType;
+  String? categoryValue;
+  String? categoryID;
 
   Categories({
     required this.categoryName,
-    required this.categoryType
+    required this.categoryType,
+    this.categoryID,
+    this.categoryValue
   });
 
   String getCategoryName() {
@@ -13,5 +17,13 @@ class Categories {
 
   String getCategoryType() {
     return categoryType;
+  }
+
+  String? getCategoryID() {
+    return categoryID;
+  }
+
+  String? getCategoryValue() {
+    return categoryValue;
   }
 }

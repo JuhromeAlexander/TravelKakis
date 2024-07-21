@@ -39,10 +39,11 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
       refLength = data['budgets'].length;
       budgetDoc = data['budgets'];
     });
-
+    print('After GetUsert');
     for (int i = 0; i < refLength; i++) {
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print(data['categoryList']);
         budgetList.add(Budgets(
             budgetTitle: data['budgetTitle'].toString(),
             budgetStartDate: data['budgetStartDate'].toString(),
@@ -55,7 +56,9 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
             budgetStatusColor: data['budgetStatusColor'],
             categoryList: data['categoryList']));
       });
+      print(i);
     }
+    print(budgetList);
     return budgetList;
   }
 
@@ -211,7 +214,8 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                 color: data[index].getBudgetStatusColor() == "Colors.green" ? Colors.green : Colors.red,
                                 borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(20.0),
-                                )),
+                                )
+                            ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8.0,
                               vertical: 4.0,
@@ -243,8 +247,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         future: getData(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            List data = snapshot.data;
-
+            List data = snapshot.data!;
             return Flexible(child: _individualCard(context, data));
           }
           if (!snapshot.hasData) {

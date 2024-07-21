@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:travel_kakis/models/Categories.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 import '../trips/Trips.dart';
@@ -29,6 +30,7 @@ class _CreateBudgetState extends State<CreateBudget> {
     CollectionReference budgets =
         FirebaseFirestore.instance.collection('budget');
     CollectionReference user = FirebaseFirestore.instance.collection('users');
+
 
     await budgets.add({
       'budgetTitle': _budgetNameController.text,
@@ -89,15 +91,26 @@ class _CreateBudgetState extends State<CreateBudget> {
   }
 
   Future<List> getCategoryData() async {
-    List categoryList = [];
+    List<Categories> categoryList = [];
 
     CollectionReference categoryRef =
         FirebaseFirestore.instance.collection('categories');
-    QuerySnapshot querySnapshot = await categoryRef.get();
-
-    categoryList =
-        querySnapshot.docs.map((doc) => doc.get('categoryName')).toList();
-
+    //QuerySnapshot querySnapshot = await categoryRef.get();
+    categoryRef.get().then(
+        (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+                categoryName: data['categoryName'].toString(),
+                categoryType: data['categoryType'].toString(),
+                categoryID: data['categoryID'].toString(),
+              )
+            );
+          }
+        }
+    );
+    // categoryList =
+    //     querySnapshot.docs.map((doc) => doc.get('categoryName')).toList();
     return categoryList;
   }
 
@@ -168,7 +181,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         child: MultiSelectDialogField(
                           title: const Text('Select Categories'),
                           items: categoryData.map((category) {
-                            return MultiSelectItem(category, category);
+                            return MultiSelectItem(category.categoryName, category.categoryName);
                           }).toList(),
                           onConfirm: (values) {
                             _selectedCategories = values;
