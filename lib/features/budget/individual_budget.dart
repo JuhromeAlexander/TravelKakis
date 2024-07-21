@@ -136,11 +136,11 @@ class _IndividualBudgetState extends State<IndividualBudget> {
 
         print('After QuerySnapshot');
 
-        querySnapshot.docs.map((element) => {
-              setState(() {
-                expenseValue = double.parse(element.get('expenseCost').toString()) + expenseValue;
-              })
-            });
+        List<DocumentSnapshot> expenseDocs = querySnapshot.docs;
+        expenseDocs.forEach((document) {
+          expenseValue = double.parse(document.get('expenseCost').toString()) +
+              expenseValue;
+        });
 
         print('After Map');
         print('ExpenseValue');
