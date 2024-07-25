@@ -27,26 +27,34 @@ class IndividualTrip extends StatefulWidget {
 }
 
 class _IndividualTripState extends State<IndividualTrip> {
-  //delete trip
-  void _deleteCurrentActivity(String activityDocumentID, data, index) async {
-    //TODO: give warning when deleting & delete
 
-    //delete all the activites that is tagged to this trip
+  //delete activiy
+  void _deleteCurrentActivity(activityData) async {
+    toastMessage(context, "Activity: ${activityData.getActivityTitle()}, has been deleted!");
 
-    //1. get the collection of trips
-    CollectionReference activity =
-        FirebaseFirestore.instance.collection('activity');
-    CollectionReference trip = FirebaseFirestore.instance.collection('trips');
+    //delete the activity
+    CollectionReference activities = FirebaseFirestore.instance.collection('activity');
+    String currActivityID = activityData.getDocumentID();
+    await activities.doc(currActivityID).delete();
 
-    //2. delete the element from the current trip array
-    String tripID = data[index].getTripID;
-    trip.doc(tripID).update({
-      'activities':
-          FieldValue.arrayRemove(data[index].getTripDocumentReference()),
+    //Remove the activity from the trip
+    CollectionReference currTrip = FirebaseFirestore.instance.collection('trips');
+    DocumentReference currActivityDocRef = activityData.getActivityDocumentReference();
+    currTrip.doc(activityData.getTripID()).update({
+      'activities': FieldValue.arrayRemove([currActivityDocRef])
     });
 
-    //3. delete that specific activity
-    await activity.doc(activityDocumentID).delete();
+    callback();
+  }
+
+  //toast message to notify user that activity has been deleted
+  void toastMessage(BuildContext context, String value) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(value),
+      ),
+    );
   }
 
   late Future<List> _getData = getData();
@@ -139,12 +147,7 @@ class _IndividualTripState extends State<IndividualTrip> {
                   // Define the menu items for the PopupMenuButton
                   return <PopupMenuEntry<int>>[
                     PopupMenuItem<int>(
-                      onTap: () => _deleteCurrentActivity(
-                          currentActivityList[index]
-                              .getActivityDocumentReference()
-                              .toString(),
-                          currentActivityList,
-                          index),
+                      onTap: () => _deleteCurrentActivity(currentActivityList[index]),
 
                       // () => _showToast(context, currentActivityList[index].getActivityDocumentReference().toString()),
                       // value: ,
@@ -157,7 +160,9 @@ class _IndividualTripState extends State<IndividualTrip> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => IndividualActivity(
-                        documentSnapshot:
+                        tripCallback: callback,
+                        tripDocumentSnapshot: widget.tripDocumentSnapshot,
+                        activityDocumentSnapshot:
                             currentActivityList[index].getDocumentSnapshot())),
               );
             },
