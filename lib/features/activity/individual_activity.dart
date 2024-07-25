@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:travel_kakis/features/activity/edit_information.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
-import 'package:travel_kakis/features/activity/document_schedule.dart';
 
 
 class IndividualActivity extends StatefulWidget {
@@ -178,9 +177,7 @@ class _IndividualActivityState extends State<IndividualActivity> {
   @override
   Widget build(BuildContext context) {
     final data = widget.activityDocumentSnapshot.data() as Map<String, dynamic>;
-    return ChangeNotifierProvider(
-      create: (context) => DocumentSchedule(),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text(data['title']),
         ),
@@ -235,7 +232,7 @@ class _IndividualActivityState extends State<IndividualActivity> {
                     ))),
           ],
         ),
-      ),
+
     );
   }
 }
