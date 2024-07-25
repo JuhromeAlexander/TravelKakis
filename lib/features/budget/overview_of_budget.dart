@@ -40,23 +40,31 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
       budgetDoc = data['budgets'];
     });
     print('After GetUsert');
+    print(budgetDoc);
     for (int i = 0; i < refLength; i++) {
+      print(i);
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print('Printing Cat List');
         print(data['categoryList']);
+        print(data['userName']);
+        print(data['budgetSpent']);
+        print(data['totalBudget']);
+        print(data['totalBudget'] - data['budgetSpent']);
         budgetList.add(Budgets(
-            budgetTitle: data['budgetTitle'].toString(),
-            budgetStartDate: data['budgetStartDate'].toString(),
-            budgetEndDate: data['budgetEndDate'].toString(),
-            totalBudget: data['totalBudget'],
-            budgetSpent: data['budgetSpent'],
-            budgetRemaining: data['totalBudget'] - data['budgetSpent'],
-            budgetCardIndicatorValue:
+             budgetTitle: data['budgetTitle'].toString(),
+             budgetStartDate: data['budgetStartDate'].toString(),
+             budgetEndDate: data['budgetEndDate'].toString(),
+             totalBudget: data['totalBudget'],
+             budgetSpent: data['budgetSpent'],
+             budgetRemaining: data['totalBudget'] - data['budgetSpent'],
+             budgetCardIndicatorValue:
                 (data['budgetSpent'] / data['totalBudget']) * 100,
-            budgetStatusColor: data['budgetStatusColor'],
-            categoryList: data['categoryList']));
+             budgetStatusColor: data['budgetStatusColor'],
+             categoryList: data['categoryList'],
+             userName: data['userName']
+        ));
       });
-      print(i);
     }
     print(budgetList);
     return budgetList;
@@ -92,7 +100,9 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                           budgetCardIndicatorValue:
                               data[index].getBudgetCardIndicatorValue(),
                           budgetStatusColor: data[index].getBudgetStatusColor(),
-                          categoryList: data[index].getCategoryList())),
+                          categoryList: data[index].getCategoryList(),
+                          userName: data[index].getUserName(),
+                      )),
                 );
               },
               child: Stack(
@@ -135,7 +145,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  data[index].getBudgetCardIndicatorValue().toString(),
+                                  (data[index].getBudgetCardIndicatorValue()).toString(),
                                 ),
                               ),
                             ],
@@ -144,13 +154,13 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                             height: 15.0,
                           ),
                           Text(
-                            data[index].getBudgetSpent().toString(),
+                            (data[index].getBudgetSpent()).toString(),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
                           ),
                           Text(
-                            data[index].getBudgetRemaining().toString(),
+                            (data[index].getBudgetRemaining()).toString(),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),

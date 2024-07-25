@@ -11,6 +11,7 @@ class Budgets {
   final List? expensesList;
   final List? categoryList;
   final List? budgetList;
+  final String? userName;
 
   Budgets({
     this.budgetTitle,
@@ -23,7 +24,8 @@ class Budgets {
     this.budgetStatusColor,
     this.expensesList,
     this.categoryList,
-    this.budgetList
+    this.budgetList,
+    this.userName
   });
 
   String? getBudgetStatusColor() {
@@ -68,6 +70,10 @@ class Budgets {
 
   List? getBudgetsList() {
     return budgetList;
+  }
+
+  String? getUserName() {
+    return userName;
   }
 
 }

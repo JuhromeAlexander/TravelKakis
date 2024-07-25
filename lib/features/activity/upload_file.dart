@@ -47,6 +47,7 @@ class UploadFileState extends State<UploadFile> {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   Future<void> _launchUrl(Uri url) async {

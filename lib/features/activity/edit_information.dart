@@ -85,12 +85,10 @@ class _EditInformationState extends State<EditInformation> {
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
-    if (datePicked != null) {
-      setState(() {
-        controller.text = datePicked.toString().split(' ')[0];
-      });
+    setState(() {
+      controller.text = datePicked.toString().split(' ')[0];
+    });
     }
-  }
 
   //picking the time
   Future<void> _selectTime(context, controller) async {
