@@ -25,7 +25,6 @@ class UploadFileState extends State<UploadFile> {
 
   void callBack() {
     setState(() {
-
       getUploadedFiles();
     });
   }
@@ -83,6 +82,7 @@ class UploadFileState extends State<UploadFile> {
   }
 
   Widget _cardInformation(context) {
+
     if (_uploadedDocuments.isEmpty) {
       return const Center(
         child: Text("No documents has been uploaded"),
@@ -128,7 +128,8 @@ class UploadFileState extends State<UploadFile> {
                   );
                 }
                 return Container();
-              });
+              }
+              );
         },
         separatorBuilder: (context, index) {
           return const Divider();
@@ -138,7 +139,7 @@ class UploadFileState extends State<UploadFile> {
 
   void getUploadedFiles() async {
     List<Reference>? result = await getUsersUploadedFiles();
-    print(result);
+
     if (result != null) {
       setState(() {
         _uploadedDocuments = result;

@@ -10,7 +10,6 @@ import 'package:travel_kakis/features/activity/edit_information.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
-
 class IndividualActivity extends StatefulWidget {
   final DocumentSnapshot activityDocumentSnapshot;
   final DocumentSnapshot tripDocumentSnapshot;
@@ -28,7 +27,6 @@ class IndividualActivity extends StatefulWidget {
 }
 
 class _IndividualActivityState extends State<IndividualActivity> {
-
   //refresh data
   void callBack() {
     widget.tripCallback();
@@ -154,7 +152,6 @@ class _IndividualActivityState extends State<IndividualActivity> {
     final pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'jpg', 'png', 'jpeg'],
-
     );
 
     //TODO: the file folder must be unique so as to not overlap with other trips/activity/
@@ -167,10 +164,7 @@ class _IndividualActivityState extends State<IndividualActivity> {
       final ref = FirebaseStorage.instance.ref().child(path);
 
       ref.putFile(file);
-
     }
-
-
     return;
   }
 
@@ -178,61 +172,60 @@ class _IndividualActivityState extends State<IndividualActivity> {
   Widget build(BuildContext context) {
     final data = widget.activityDocumentSnapshot.data() as Map<String, dynamic>;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(data['title']),
-        ),
-        floatingActionButton: SpeedDial(
-          backgroundColor: Colors.blue,
-          spaceBetweenChildren: 10,
-          spacing: 10,
-          icon: Icons.add,
-          children: [
-            SpeedDialChild(
-                child: Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
-            SpeedDialChild(
-                child: Icon(Icons.upload_file),
-                label: 'Upload file',
-                onTap: () => selectFile()),
-            SpeedDialChild(
-                child: Icon(Icons.info_sharp),
-                label: 'Edit Information',
-                onTap: () => _navigateToEditInformation(
-                    context, widget.activityDocumentSnapshot, callBack)),
-          ],
-        ),
-        body: Column(
-          children: <Widget>[
-            //bottom half
-            Expanded(
-                flex: 7,
-                child: DefaultTabController(
-                    length: 3,
-                    child: Scaffold(
-                      appBar: AppBar(
-                        automaticallyImplyLeading: false,
-                        title: const TabBar(
-                          tabs: [
-                            Tab(
-                              text: 'Information',
-                            ),
-                            Tab(text: 'Documents'),
-                            Tab(text: 'Transport'),
-                          ],
-                        ),
+      appBar: AppBar(
+        title: Text(data['title']),
+      ),
+      floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue,
+        spaceBetweenChildren: 10,
+        spacing: 10,
+        icon: Icons.add,
+        children: [
+          SpeedDialChild(
+              child: Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
+          SpeedDialChild(
+              child: Icon(Icons.upload_file),
+              label: 'Upload file',
+              onTap: () => selectFile()),
+          SpeedDialChild(
+              child: Icon(Icons.info_sharp),
+              label: 'Edit Information',
+              onTap: () => _navigateToEditInformation(
+                  context, widget.activityDocumentSnapshot, callBack)),
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          //bottom half
+          Expanded(
+              flex: 7,
+              child: DefaultTabController(
+                  length: 3,
+                  child: Scaffold(
+                    appBar: AppBar(
+                      automaticallyImplyLeading: false,
+                      title: const TabBar(
+                        tabs: [
+                          Tab(
+                            text: 'Information',
+                          ),
+                          Tab(text: 'Documents'),
+                          Tab(text: 'Transport'),
+                        ],
                       ),
-                      body: TabBarView(children: [
-                        printInformation(data),
-                        UploadFile(
-                          activityDocumentSnapshot:
-                              widget.activityDocumentSnapshot,
-                          tripDocumentSnapshot: widget.tripDocumentSnapshot,
-                        ),
-                        Center(child: Text('3')),
-                      ]),
-                    ))),
-          ],
-        ),
-
+                    ),
+                    body: TabBarView(children: [
+                      printInformation(data),
+                      UploadFile(
+                        activityDocumentSnapshot:
+                            widget.activityDocumentSnapshot,
+                        tripDocumentSnapshot: widget.tripDocumentSnapshot,
+                      ),
+                      Center(child: Text('3')),
+                    ]),
+                  ))),
+        ],
+      ),
     );
   }
 }
