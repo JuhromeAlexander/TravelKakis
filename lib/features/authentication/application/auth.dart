@@ -22,6 +22,7 @@ class Auth extends StatelessWidget {
           user_info.setUsername(data['name']);
           user_info.setDesc(data['desc']);
           user_info.setEmail(data['email']);
+          user_info.setProfilePicture(data['profilePicture']);
           user_info.setJoinedDate(data['dateJoined']);
         },
       onError: (e) => print("Error getting document: $e"),
