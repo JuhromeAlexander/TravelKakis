@@ -1,4 +1,6 @@
 library user_information;
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 String _id = '';
@@ -6,6 +8,7 @@ String _username = '';
 String _email = '';
 String _description = '';
 String _joinedDate = '';
+String _profilePic = '';
 
 String getUsername() {
   return _username;
@@ -33,6 +36,10 @@ String getJoinedDate() {
   return _joinedDate;
 }
 
+String getProfilePicture() {
+  return _profilePic;
+}
+
 void setUsername(String username) {
   _username = username;
 }
@@ -47,4 +54,8 @@ void setDesc(String desc) {
 
 void setJoinedDate(String joinedDate) {
   _joinedDate = joinedDate;
+}
+
+void setProfilePicture(String profilePic) {
+  _profilePic = profilePic;
 }

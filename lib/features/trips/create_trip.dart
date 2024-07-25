@@ -82,8 +82,9 @@ class _CreateTripState extends State<CreateTrip> {
                       padding: const EdgeInsets.only(top: 30.0),
                       child: TextField(
                         controller: _tripTitleController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Title',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -94,8 +95,9 @@ class _CreateTripState extends State<CreateTrip> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _tripLocationController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Location',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -106,9 +108,10 @@ class _CreateTripState extends State<CreateTrip> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _startDateController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.calendar_month),
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           labelText: 'Start date',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -123,11 +126,12 @@ class _CreateTripState extends State<CreateTrip> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _endDateController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.calendar_month),
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
-                          hintText: 'Select End Date',
+                          labelText: 'End Date',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                         readOnly: true,
@@ -140,8 +144,9 @@ class _CreateTripState extends State<CreateTrip> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
                         controller: _collaborationsController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Colors.grey)),
                           hintText: 'Collaborators',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -153,12 +158,14 @@ class _CreateTripState extends State<CreateTrip> {
                     child: ElevatedButton(
                       onPressed: addData,
                       style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(6), // <-- Radius
                           ),
                           minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Create'),
+                      child: const Text(
+                          style: TextStyle(color: Colors.white), 'Create'),
                     ),
                   )
                 ],

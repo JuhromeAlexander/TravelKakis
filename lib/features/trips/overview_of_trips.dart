@@ -12,10 +12,38 @@ class OverviewOfTrips extends StatefulWidget {
 }
 
 class _OverviewOfTripsState extends State<OverviewOfTrips> {
-
   overviewTripCallback() {
-    setState(() {
+    setState(() {});
+  }
+
+  void deleteTrip(tripData) async {
+    toastMessage(context, "Trip: ${tripData.getTripTitle()}, has been deleted!");
+
+     //delete the activity
+    CollectionReference activities = FirebaseFirestore.instance.collection('activity');
+
+    List activityLocal = tripData.getActivityList();
+    int actLength = activityLocal.length;
+
+    for (int i = 0; i < actLength; i++) {
+      String activityDocumentID = activityLocal[i].toString().split('/')[1].replaceAll(")", "");
+      await activities.doc(activityDocumentID).delete();
+    }
+
+    // //delete the trip from the users
+    CollectionReference user = FirebaseFirestore.instance.collection('users');
+    DocumentReference currDocumentRef = tripData.getTripDocumentReference();
+    user.doc(user_info.getID()).update({
+      'trips': FieldValue.arrayRemove([currDocumentRef])
     });
+
+    // delete the Trip from db
+    CollectionReference currTrip = FirebaseFirestore.instance.collection('trips');
+    String tripDocumentID = currDocumentRef.toString().split('/')[1].replaceAll(")", "");
+    await currTrip.doc(tripDocumentID).delete();
+
+    overviewTripCallback();
+
   }
 
   //TODO: I don't think this is the most efficient way to do it
@@ -38,10 +66,9 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     for (int i = 0; i < reflength; i++) {
       await tripDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
-        print(data);
-        print(i);
+
         tripList.add(Trips(
-          tripDocumentReference: tripDoc[i],
+            tripDocumentReference: tripDoc[i],
             tripStartDate: data['tripStartDate'].toString(),
             tripEndDate: data['tripEndDate'].toString(),
             tripLocation: data['tripLocation'].toString(),
@@ -50,17 +77,13 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
             activitiy_list: data['activities']));
       });
     }
-    print(tripList);
     return tripList;
   }
 
   //return the DateTime format
   DateTime returnDate(String date) {
-
-    DateTime dateFormat = DateTime(
-        int.parse(date.split('-')[0]),
-        int.parse(date.split('-')[1]),
-        int.parse(date.split('-')[2]));
+    DateTime dateFormat = DateTime(int.parse(date.split('-')[0]),
+        int.parse(date.split('-')[1]), int.parse(date.split('-')[2]));
 
     return dateFormat;
   }
@@ -73,10 +96,12 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
                 onSelected: (value) {},
                 itemBuilder: (BuildContext context) {
                   // Define the menu items for the PopupMenuButton
-                  return const <PopupMenuEntry<int>>[
+                  return <PopupMenuEntry<int>>[
                     PopupMenuItem<int>(
                       value: 0,
                       child: Text("Delete"),
+                      // onTap: () => test(context, data[index].getTripTitle()),
+                      onTap: () => deleteTrip(data[index]),
                     ),
                   ];
                 }),
@@ -87,9 +112,10 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
                     builder: (context) => IndividualTrip(
                           activities: data[index].getActivityList(),
                           tripTitle: data[index].getTripTitle(),
-                          tripDocumentSnapshot: data[index].getDocumentSnapshot(),
+                          tripDocumentSnapshot:
+                              data[index].getDocumentSnapshot(),
                           endDate: returnDate(data[index].getTripEndDate()),
-                      overviewTripCallback: overviewTripCallback,
+                          overviewTripCallback: overviewTripCallback,
                           startDate: returnDate(data[index].getTripStartDate()),
                         )),
               );
@@ -106,6 +132,16 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
           return const Divider();
         },
         itemCount: data.length);
+  }
+
+  //toast message to notify user that trip has been deleted
+  void toastMessage(BuildContext context, String value) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(value),
+      ),
+    );
   }
 
   //show up in the card

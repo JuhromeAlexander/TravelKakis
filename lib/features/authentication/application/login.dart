@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SizedBox(
@@ -89,7 +89,7 @@ class _LoginState extends State<Login> {
                         textStyle: Theme.of(context).textTheme.displayLarge,
                         fontSize: 48,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Colors.blue,
                       )),
 
                   // const //email textfield
@@ -97,14 +97,15 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.only(top: 50.0),
                       child: TextField(
                         controller: emailController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                              borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.blue)),
                             hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.blue),
                             prefixIcon: Icon(
                               Icons.email,
-                              color: Colors.white,
+                              color: Colors.blue,
                             )),
                       )),
 
@@ -114,14 +115,15 @@ class _LoginState extends State<Login> {
                     child: TextField(
                         controller: passwordController,
                         obscureText: true,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.blue)),
                             hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.blue),
                             prefixIcon: Icon(
                               Icons.lock,
-                              color: Colors.white,
+                              color: Colors.blue,
                             ))),
                   ),
 
@@ -134,7 +136,7 @@ class _LoginState extends State<Login> {
                         },
                         child: const Text(
                           'Forgot Password',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blue),
                         ),
                       )),
 
@@ -142,11 +144,13 @@ class _LoginState extends State<Login> {
                   ElevatedButton(
                     onPressed: signUserIn,
                     style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6), // <-- Radius
                         ),
                         minimumSize: const Size(double.infinity, 40)),
-                    child: const Text('Login'),
+                    child: const Text(
+                        style: TextStyle(color: Colors.white), 'Login'),
                   ),
 
                   //Registering a new account
@@ -159,7 +163,7 @@ class _LoginState extends State<Login> {
                         child: const Text(
                           'No account? Register here',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
                       )),
 
@@ -169,19 +173,19 @@ class _LoginState extends State<Login> {
                       child: Container(
                           margin: const EdgeInsets.only(right: 10.0),
                           child: const Divider(
-                            color: Colors.white,
+                            color: Colors.blue,
                             height: 36,
                           )),
                     ),
                     const Text(
                       "Or",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.blue),
                     ),
                     Expanded(
                       child: Container(
                           margin: const EdgeInsets.only(left: 10.0),
                           child: const Divider(
-                            color: Colors.white,
+                            color: Colors.blue,
                             height: 36,
                           )),
                     ),

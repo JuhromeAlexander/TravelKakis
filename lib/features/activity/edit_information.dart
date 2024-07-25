@@ -1,42 +1,65 @@
 //import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:travel_kakis/features/activity/activity.dart';
 
-class CreateActivity extends StatefulWidget {
+class EditInformation extends StatefulWidget {
   //document snapshot of trip
   final DocumentSnapshot documentSnapshot;
+  final Function callback;
 
-  //the date of the current selected
-  final DateTime startDate;
-  Function callback;
-
-  CreateActivity(
-      {super.key,
-      required this.documentSnapshot,
-      required this.startDate,
-      required this.callback});
+  EditInformation({
+    super.key,
+    required this.documentSnapshot,
+    required this.callback,
+  });
 
   @override
-  _CreateActivityState createState() => _CreateActivityState();
+  _EditInformationState createState() => _EditInformationState();
 }
 
-class _CreateActivityState extends State<CreateActivity> {
-  final _activityTitleController = TextEditingController();
-  final _activityDateController = TextEditingController();
-  final _activityDescriptionController = TextEditingController();
-  final _activityCostController = TextEditingController();
-  final _activityTimeController = TextEditingController();
-  final _activityDurationController = TextEditingController();
-  final _activityLocationController = TextEditingController();
-  final _activityPhoneController = TextEditingController();
-  final _activityWebsiteController = TextEditingController();
+class _EditInformationState extends State<EditInformation> {
+
+
+  late final TextEditingController _activityTitleController;
+  late final TextEditingController _activityDateController;
+  late final TextEditingController _activityDescriptionController;
+  late final TextEditingController _activityCostController;
+  late final TextEditingController _activityTimeController;
+  late final TextEditingController _activityDurationController;
+  late final TextEditingController _activityLocationController;
+  late final TextEditingController _activityPhoneController;
+  late final TextEditingController _activityWebsiteController;
+
+  late final _startDate;
+
+  @override
+  void initState() {
+    final data = widget.documentSnapshot.data() as Map<String, dynamic>;
+
+    _startDate = DateTime.parse(data['date']);
+
+    _activityTitleController = TextEditingController(text: data['title']);
+    _activityDateController = TextEditingController(text: data['date']);
+    _activityDescriptionController =
+        TextEditingController(text: data['description']);
+    _activityCostController = TextEditingController(text: data['cost']);
+    _activityTimeController = TextEditingController(text: data['time']);
+    _activityDurationController = TextEditingController(text: data['duration']);
+    _activityLocationController = TextEditingController(text: data['location']);
+    _activityPhoneController = TextEditingController(text: data['phone']);
+    _activityWebsiteController = TextEditingController(text: data['website']);
+  }
 
   //to write data
-  void addData(BuildContext context) async {
+  void updateData(BuildContext context, documentSnapshot) async {
     CollectionReference activity =
         FirebaseFirestore.instance.collection('activity');
 
-    await activity.add({
+    String docID = widget.documentSnapshot.id;
+
+    await activity.doc(docID).update({
       'cost': _activityCostController.text,
       'date': _activityDateController.text,
       'description': _activityDescriptionController.text,
@@ -47,28 +70,27 @@ class _CreateActivityState extends State<CreateActivity> {
       'title': _activityTitleController.text,
       'website': _activityWebsiteController.text,
       'tripID': widget.documentSnapshot.id.toString()
-    }).then((value) {
-      widget.documentSnapshot.reference.update({
-        'activities': FieldValue.arrayUnion([value]),
-      });
     });
-
-    // widget.callback();
-    Navigator.pop(context);
+    //
+    widget.callback();
+    Navigator.pop(context, );
   }
 
 //Calendar
   Future<void> _selectDate(context, controller) async {
     DateTime? datePicked = await showDatePicker(
         context: context,
-        initialDate: widget.startDate,
+        // initialDate: widget.startDate,
+        initialDate: _startDate,
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
 
-    setState(() {
-      controller.text = datePicked.toString().split(' ')[0];
-    });
+    if (datePicked != null) {
+      setState(() {
+        controller.text = datePicked.toString().split(' ')[0];
+      });
     }
+  }
 
   //picking the time
   Future<void> _selectTime(context, controller) async {
@@ -82,18 +104,17 @@ class _CreateActivityState extends State<CreateActivity> {
               child: child!);
         });
 
-    if (selectedTime != null) {
+    if (selectedTime != null)
       setState(() {
-        controller.text = selectedTime.format(context);
+        controller.text = selectedTime?.format(context);
       });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Activity'),
+        title: const Text('Edit Information'),
       ),
       body: Stack(
         children: <Widget>[
@@ -109,17 +130,27 @@ class _CreateActivityState extends State<CreateActivity> {
                 children: <Widget>[
                   //Title
                   Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: TextField(
-                        controller: _activityTitleController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(color: Colors.grey)),
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
                           hintText: 'Title',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
+                      controller: _activityTitleController,
+                    ),
+
+                    // child: TextField(
+                    //   controller: _activityTitleController,
+                    //   decoration: InputDecoration(
+                    //     enabledBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(10.0),
+                    //         borderSide: BorderSide(color: Colors.grey)),
+                    //     hintText: 'Title',
+                    //     hintStyle: TextStyle(color: Colors.grey),
+                    //   ),
+                    // )
+                  ),
                   Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextField(
@@ -247,7 +278,8 @@ class _CreateActivityState extends State<CreateActivity> {
                   Container(
                     margin: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: ElevatedButton(
-                      onPressed: () => addData(context),
+                      onPressed: () =>
+                          updateData(context, widget.documentSnapshot),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         shape: RoundedRectangleBorder(
