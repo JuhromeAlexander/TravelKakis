@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/features/profile_page/profile_setting.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
+import 'package:image_picker/image_picker.dart';
+
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,10 +15,73 @@ class Profile extends StatefulWidget {
 
 class _profileState extends State<Profile> {
 
-  callback() {
-    setState(() {
+  String image = user_info.getProfilePicture();
 
+  callback() {
+    setState(() {});
+  }
+
+  //adding the profile picture document
+  void updateProfilePicture(String profilePicture) async {
+    CollectionReference userRef =
+        await FirebaseFirestore.instance.collection('users');
+
+    await userRef
+        .doc(user_info.getID())
+        .update({'profilePicture': profilePicture});
+
+    //update the profilePicture from the user class
+    user_info.setProfilePicture(profilePicture);
+  }
+
+  Future selectImage() async {
+    //open gallary
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    updateProfilePicture(image.path);
+
+    //update the image path
+    setState(() {
+      this.image = image.path;
     });
+  }
+
+  //the blue colour edit icon located at the bottom right of the image
+  Widget editButton() {
+    return const CircleAvatar(
+      radius: 20,
+      backgroundColor: Colors.blue,
+      child: Icon(
+        Icons.add_a_photo,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget profilePicture(ImageProvider image) {
+    return Stack(
+      children: <Widget>[
+        GestureDetector(
+            onTap: selectImage,
+            child: Stack(
+              children: [
+                Container(
+                  height: 128,
+                  width: 128,
+                  child: CircleAvatar(
+                    backgroundImage: image,
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: editButton(),
+                ),
+              ],
+            )),
+      ],
+    );
   }
 
   @override
@@ -30,14 +94,14 @@ class _profileState extends State<Profile> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ClipOval(
-                child: SizedBox.fromSize(
-                  size: const Size.fromRadius(60),
-                  child: Image.network(
-                    'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              Stack(
+                children: <Widget>[
+                  if (image != '')
+                    profilePicture(FileImage(File(image)))
+                  else
+                    profilePicture(const NetworkImage(
+                        'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'))
+                ],
               ),
               Container(
                 margin: const EdgeInsets.only(left: 20.0),
@@ -65,13 +129,6 @@ class _profileState extends State<Profile> {
                         fontSize: 20,
                       ),
                     ),
-                    // ElevatedButton(
-                    //     onPressed:
-                    //         () {setState(() {
-                    //
-                    //     }); },
-                    //     child: Text('Refresh')
-                    // )
                   ],
                 ),
               ),
@@ -116,6 +173,9 @@ class _profileState extends State<Profile> {
 void _navigateToEditProfile(context, Function callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => ProfileSetting(callback: callback,)),
+    MaterialPageRoute(
+        builder: (context) => ProfileSetting(
+              callback: callback,
+            )),
   );
 }
