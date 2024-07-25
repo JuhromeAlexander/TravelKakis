@@ -93,12 +93,14 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         updateProfile(context);
                       },
                       style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(6), // <-- Radius
                           ),
                           minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Save'),
+                      child: const Text(
+                          style: TextStyle(color: Colors.white), 'Save'),
                     ),
                   )
                 ],

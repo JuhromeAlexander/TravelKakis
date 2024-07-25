@@ -104,7 +104,8 @@ class _RegisterState extends State<Register> {
       'email': emailController.text,
       'name': usernameController.text,
       'desc': '',
-      'trips': []
+      'trips': [],
+      'profilePicture': ''
     });
 
     //set the user UID so that in auth, it knows what to update
