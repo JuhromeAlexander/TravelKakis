@@ -16,6 +16,7 @@ class EditExpense extends StatefulWidget {
 
   @override
   _EditExpenseState createState() => _EditExpenseState();
+
 }
 
 class _EditExpenseState extends State<EditExpense> {
@@ -35,16 +36,31 @@ class _EditExpenseState extends State<EditExpense> {
 
   //Editing Data
   void editExpense() async {
+    String documentID = '';
     CollectionReference expense = FirebaseFirestore.instance.collection('expenses');
-    
     QuerySnapshot querySnapshot = await expense
         .where("userName", isEqualTo: widget.indivExpense.userName)
         .where("budgetName", isEqualTo: widget.indivExpense.budgetName)
         .where("expenseTitle", isEqualTo: widget.indivExpense.expenseName)
         .get();
 
-    //DocumentSnapshot documentSnapshot = querySnapshot.doc;
+    List<DocumentSnapshot> expenseDoc = querySnapshot.docs;
+    expenseDoc.forEach((document) {
+      documentID = document.id.toString();
+    });
 
+    expense.doc(documentID).update({
+      'expenseTitle' : _expenseNameController.text,
+      'expenseDesc' : _expenseDescController.text,
+      'expenseCost' : _expenseCostController.text,
+      'userName' : user_info.getUsername(),
+      'budgetName' : _selectedBudget?.budgetTitle,
+      'categoryName' : _selectedCategory,
+      'expenseType' : _selectedExpenseType,
+      'expenseDate' : _expenseDateController.text
+    });
+
+    Navigator.pop(context);
   }
 
   Future<List> getIncomeCategoryData() async {
@@ -289,7 +305,9 @@ class _EditExpenseState extends State<EditExpense> {
                   ),
                   ElevatedButton(
                       //TODO Add Edit Expense Functionality
-                      onPressed: (){},
+                      onPressed: (){
+                        editExpense();
+                      },
                       child: const Text('Edit Expense')
                   ),
                 ],

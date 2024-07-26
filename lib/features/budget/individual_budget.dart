@@ -365,7 +365,11 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => EditExpense(indivExpense: indivExpense,))
-    );
+    ).then((_) {
+      setState(() {
+
+      });
+    });
   }
 
   Widget _individualExpenseRow(context, data) {
