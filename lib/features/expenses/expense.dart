@@ -44,4 +44,7 @@ class Expense {
     return expenseDate;
   }
 
+  String getUserName() {
+    return userName;
+  }
 }

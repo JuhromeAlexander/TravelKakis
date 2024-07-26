@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/expenses/Expense.dart';
+import 'package:travel_kakis/features/expenses/edit_expense.dart';
 import 'package:travel_kakis/models/Categories.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'dart:math' as math;
@@ -112,21 +113,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
 
     return categoryList;
   }
-
-  // List<PieChartSectionData> getPieChartData() {
-  //   List<PieChartSectionData> pieChartData = [];
-  //   Future<List> collatedExpenseList = getCollatedExpenses();
-  //
-  //   for (int i = 0; i < collatedExpenseList.length; i++) {
-  //     pieChartData[i] = PieChartSectionData(
-  //         value: collatedExpenseList[i],
-  //         title: widget.categoryList?[i],
-  //         color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-  //             .withOpacity(1.0));
-  //   }
-  //
-  //   return pieChartData;
-  // }
 
   //Logic to Calculate Collated Expenses and Categories
   Future<List> getCollatedExpenses() async {
@@ -374,6 +360,13 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           return const CircularProgressIndicator();
         });
   }
+  
+  void _navigateToEditExpensesPage(Expense indivExpense) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EditExpense(indivExpense: indivExpense,))
+    );
+  }
 
   Widget _individualExpenseRow(context, data) {
     return ListView.separated(
@@ -383,6 +376,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: InkWell(
+                //TODO Send to Individual Expenses Page
                 onTap: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -440,7 +434,9 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                       flex: 1,
                       child: IconButton(
                         //TODO Add onPressed Method
-                        onPressed: () {},
+                        onPressed: () {
+                          _navigateToEditExpensesPage(data[index]);
+                        },
                         icon: const Icon(
                           Icons.edit,
                         ),
@@ -522,7 +518,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               ),
             ),
             printExpenseCard(),
-
           ],
         ),
       ),
