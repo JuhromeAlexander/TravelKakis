@@ -211,6 +211,7 @@ class _EditExpenseState extends State<EditExpense> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _budgetController,
                       label: const Text('Select Budget'),
                       initialSelection: widget.indivExpense.budgetName,
@@ -229,6 +230,7 @@ class _EditExpenseState extends State<EditExpense> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseTypeController,
                       initialSelection: widget.indivExpense.expenseType,
                       label: const Text('Select Expense Type'),
@@ -250,6 +252,7 @@ class _EditExpenseState extends State<EditExpense> {
                       ? Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseCategoryController,
                       label: const Text('Select Category'),
                       initialSelection: widget.indivExpense.categoryName,
@@ -266,8 +269,9 @@ class _EditExpenseState extends State<EditExpense> {
                     ),
                   )
                       : Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseCategoryController,
                       label: const Text('Select Category'),
                       initialSelection: widget.indivExpense.expenseName,
@@ -304,7 +308,6 @@ class _EditExpenseState extends State<EditExpense> {
                     ),
                   ),
                   ElevatedButton(
-                      //TODO Add Edit Expense Functionality
                       onPressed: (){
                         editExpense();
                       },

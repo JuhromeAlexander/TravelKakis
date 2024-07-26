@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:travel_kakis/features/budget/edit_budget.dart';
 import 'package:travel_kakis/features/expenses/Expense.dart';
+import 'package:travel_kakis/features/expenses/create_expense.dart';
 import 'package:travel_kakis/features/expenses/edit_expense.dart';
+import 'package:travel_kakis/features/expenses/individual_expense.dart';
 import 'package:travel_kakis/models/Categories.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'dart:math' as math;
@@ -372,6 +376,17 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     });
   }
 
+  void _navigateToIndivExpensesPage(Expense indivExpense) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => IndividualExpense(indivExpense: indivExpense,))
+    ).then((_) {
+      setState(() {
+
+      });
+    });
+  }
+
   Widget _individualExpenseRow(context, data) {
     return ListView.separated(
           itemBuilder: (context, index) {
@@ -381,7 +396,9 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               ),
               child: InkWell(
                 //TODO Send to Individual Expenses Page
-                onTap: () {},
+                onTap: () {
+                  _navigateToIndivExpensesPage(data[index]);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -437,7 +454,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        //TODO Add onPressed Method
                         onPressed: () {
                           _navigateToEditExpensesPage(data[index]);
                         },
@@ -499,12 +515,50 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     );
   }
 
+  //Navigation Methods
+  void _navigateToCreateExpense(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CreateExpense()),
+    );
+  }
+
+  void _navigateToEditBudget(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditBudget()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.budgetTitle.toString()),
+      ),
+      //TODO Add Logic to Add New Expense & Edit Budget
+      floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue,
+        spaceBetweenChildren: 10,
+        spacing: 10,
+        icon: Icons.add,
+        children: [
+          SpeedDialChild(
+              child: const Icon(Icons.attach_money_sharp),
+              label: 'Add Expense',
+              onTap: (){
+                _navigateToCreateExpense(context);
+              }
+          ),
+          SpeedDialChild(
+              child: const Icon(Icons.edit_attributes_sharp),
+              label: 'Edit budget',
+              onTap: (){
+                _navigateToEditBudget(context);
+              }
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -522,6 +576,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               ),
             ),
             printExpenseCard(),
+
           ],
         ),
       ),
