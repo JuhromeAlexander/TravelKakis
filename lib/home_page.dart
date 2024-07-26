@@ -29,6 +29,11 @@ class _HomePageState extends State<HomePage> {
   //current page for bottom nav
   int currentPageIndex = 0;
 
+  callback() {
+    print('hi');
+    setState(() {});
+  }
+
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -64,7 +69,7 @@ class _HomePageState extends State<HomePage> {
             child: Icon(Icons.airplanemode_active),
             label: 'Create Trip',
             onTap: (){
-              _navigateToCreateTrip(context);
+              _navigateToCreateTrip(context, callback);
             }
           ),
           SpeedDialChild(
@@ -93,10 +98,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 //navigate to create trip
-void _navigateToCreateTrip(context) {
+void _navigateToCreateTrip(context, callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CreateTrip()),
+    MaterialPageRoute(builder: (context) => CreateTrip(callback: callback,)),
   );
 }
 

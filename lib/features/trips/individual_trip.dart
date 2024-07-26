@@ -63,7 +63,7 @@ class _IndividualTripState extends State<IndividualTrip> {
 
   callback() {
     activities.clear();
-    widget.overviewTripCallback();
+    // widget.overviewTripCallback();
     setState(() {
       _getData = getData();
     });
@@ -75,7 +75,9 @@ class _IndividualTripState extends State<IndividualTrip> {
 
   @override
   void initState() {
+
     super.initState();
+
     List<DateTime> listOfDays = getDays(widget.startDate, widget.endDate);
 
     dropdownItems = List.generate(
@@ -95,12 +97,17 @@ class _IndividualTripState extends State<IndividualTrip> {
 
   // Future<List> getData(List activityData) async {
   Future<List> getData() async {
-    //get the document snapshot of the current trip
-    final currentTrip =
-        widget.tripDocumentSnapshot.data() as Map<String, dynamic>;
 
-    //get the List of the activityData
-    List activityData = currentTrip['activities'];
+    CollectionReference trips = FirebaseFirestore.instance.collection('trips');
+    DocumentReference specificTrips = trips.doc(widget.tripDocumentSnapshot.id);
+
+    List activityData = [];
+
+    await specificTrips.get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      activityData = (data['activities']);
+
+    });
 
     //get the length of the list
     int activitylength = activityData.length;
@@ -109,6 +116,7 @@ class _IndividualTripState extends State<IndividualTrip> {
       await activityData[i].get().then((DocumentSnapshot doc) {
         if (doc.exists) {
           final data = doc.data() as Map<String, dynamic>;
+
           if (data['date'].toString() == currentItem) {
             activities.add(activity(
               activityDocumentReference: activityData[i],
@@ -240,7 +248,7 @@ class _IndividualTripState extends State<IndividualTrip> {
                       documentSnapshot: widget.tripDocumentSnapshot,
                       startDate: widget.startDate,
                       callback: callback)),
-            ).then((_) => callback());
+            );
           },
           shape: CircleBorder(),
           child: const Icon(Icons.add)),

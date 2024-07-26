@@ -9,7 +9,7 @@ class OverviewOfTrips extends StatefulWidget {
   const OverviewOfTrips({super.key});
 
   @override
-  _OverviewOfTripsState createState() => _OverviewOfTripsState();
+  _OverviewOfTripsState createState() =>_OverviewOfTripsState();
 }
 
 class _OverviewOfTripsState extends State<OverviewOfTrips> {
@@ -18,16 +18,19 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
   }
 
   void deleteTrip(tripData) async {
-    toastMessage(context, "Trip: ${tripData.getTripTitle()}, has been deleted!");
+    toastMessage(
+        context, "Trip: ${tripData.getTripTitle()}, has been deleted!");
 
-     //delete the activity
-    CollectionReference activities = FirebaseFirestore.instance.collection('activity');
+    //delete the activity
+    CollectionReference activities =
+        FirebaseFirestore.instance.collection('activity');
 
     List activityLocal = tripData.getActivityList();
     int actLength = activityLocal.length;
 
     for (int i = 0; i < actLength; i++) {
-      String activityDocumentID = activityLocal[i].toString().split('/')[1].replaceAll(")", "");
+      String activityDocumentID =
+          activityLocal[i].toString().split('/')[1].replaceAll(")", "");
       await activities.doc(activityDocumentID).delete();
     }
 
@@ -39,15 +42,14 @@ class _OverviewOfTripsState extends State<OverviewOfTrips> {
     });
 
     // delete the Trip from db
-    CollectionReference currTrip = FirebaseFirestore.instance.collection('trips');
-    String tripDocumentID = currDocumentRef.toString().split('/')[1].replaceAll(")", "");
+    CollectionReference currTrip =
+        FirebaseFirestore.instance.collection('trips');
+    String tripDocumentID =
+        currDocumentRef.toString().split('/')[1].replaceAll(")", "");
     await currTrip.doc(tripDocumentID).delete();
 
     overviewTripCallback();
-
   }
-
-  //TODO: I don't think this is the most efficient way to do it
 
   Future<List> getData() async {
     List tripDoc = [];
