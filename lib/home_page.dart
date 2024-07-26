@@ -101,7 +101,8 @@ class _HomePageState extends State<HomePage> {
 void _navigateToCreateTrip(context, callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CreateTrip(callback: callback,)),
+    MaterialPageRoute(builder: (context) => CreateTrip()),
+        //CreateTrip(callback: callback,)),
   );
 }
 

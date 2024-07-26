@@ -8,7 +8,6 @@ class FrontendTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
@@ -20,7 +19,7 @@ class FrontendTest extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Category Name',
                 style: TextStyle(
                   color: CupertinoColors.black,

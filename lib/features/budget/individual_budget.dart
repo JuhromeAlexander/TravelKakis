@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +8,6 @@ import 'package:travel_kakis/features/expenses/Expense.dart';
 import 'package:travel_kakis/features/expenses/create_expense.dart';
 import 'package:travel_kakis/features/expenses/edit_expense.dart';
 import 'package:travel_kakis/features/expenses/individual_expense.dart';
-import 'package:travel_kakis/models/Categories.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'dart:math' as math;
 
@@ -135,7 +132,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           .where('categoryName', isEqualTo: categoryName)
           .where('budgetName', isEqualTo: budgetName)
           .where('userName', isEqualTo: user_info.getUsername())
-          .limit(5)
           .get();
 
       List<DocumentSnapshot> expenseDocs = querySnapshot.docs;
@@ -367,6 +363,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             child: Container(
               width: MediaQuery.sizeOf(context).width,
               height: 150.0,
+              margin: const EdgeInsets.all(5.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,12 +390,12 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                         ),
                       ),
                       const SizedBox(
-                        width: 20.0,
+                        width: 15.0,
                       ),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Text(
-                          '${((expenseData[index] / widget.totalBudget).toStringAsFixed(0)).toString()}%',
+                          '${(((expenseData[index] / widget.totalBudget) * 100).toStringAsFixed(0)).toString()}%',
                         ),
                       ),
                     ],
@@ -423,12 +420,19 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                       color: CupertinoColors.black,
                     ),
                   ),
-                  Text(
+                  (widget.totalBudget! - expenseData[index]) < 0 ? Text(
                     'Remaining: \$${(widget.totalBudget! - expenseData[index])}',
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w300,
-                      color: CupertinoColors.black,
+                      color: CupertinoColors.systemRed,
+                    ),
+                  ) : Text(
+                    'Remaining: \$${(widget.totalBudget! - expenseData[index])}',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
+                      color: CupertinoColors.systemGreen,
                     ),
                   ),
                 ],
@@ -599,7 +603,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       height: 500.0,
-      margin: EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(20.0),
       color: CupertinoColors.systemGrey,
       child: Container(
         decoration: BoxDecoration(
