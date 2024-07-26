@@ -44,13 +44,13 @@ class _HomePageState extends State<HomePage> {
       currentPageIndex = index;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //sticks the floating action button to the bottom of the phone when keyboard appears
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        title: Text('TravelKakis'),
         actions: [
           IconButton(
             onPressed: signUserOut,

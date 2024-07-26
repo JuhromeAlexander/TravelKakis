@@ -221,68 +221,72 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 bottomRight: Radius.circular(20.0),
               ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          widget.budgetTitle.toString(),
-                          style: const TextStyle(
-                            color: Colors.grey,
+            child: Container(
+              width: MediaQuery.sizeOf(context).width,
+              margin: EdgeInsets.all(15.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            widget.budgetTitle.toString(),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          widget.budgetStartDate.toString(),
-                          style: const TextStyle(
-                            color: Colors.grey,
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            widget.budgetStartDate.toString(),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          widget.budgetEndDate.toString(),
-                          style: const TextStyle(
-                            color: Colors.grey,
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            widget.budgetEndDate.toString(),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: widget.budgetStatusColor == "Colors.green"
-                          ? Colors.green
-                          : Colors.red,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20.0),
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 4.0,
-                    ),
-                    child: const Text(
-                      'Status',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      ],
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: BoxDecoration(
+                color: widget.budgetStatusColor == "Colors.green"
+                    ? Colors.green
+                    : Colors.red,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
                 ),
-              ],
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 29.0,
+                vertical: 4.0,
+              ),
+              child: const Text(
+                'Status',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
