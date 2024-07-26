@@ -196,6 +196,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _budgetController,
                       label: const Text('Select Budget'),
                       onSelected: (value) {
@@ -213,6 +214,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseTypeController,
                       label: const Text('Select Expense Type'),
                       onSelected: (value) {
@@ -233,6 +235,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                   ? Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseCategoryController,
                       label: const Text('Select Category'),
                       initialSelection: _selectedCategory,
@@ -251,6 +254,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                   : Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: DropdownMenu(
+                      width: MediaQuery.sizeOf(context).width - 25,
                       controller: _expenseCategoryController,
                       label: const Text('Select Category'),
                       initialSelection: _selectedCategory,

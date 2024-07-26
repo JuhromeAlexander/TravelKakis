@@ -333,7 +333,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'At A Glance',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -363,6 +363,11 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           }
           return const CircularProgressIndicator();
         });
+  }
+
+  //TODO Implement Detailed Categories View
+  Widget _showDetailedCategoriesWidget() {
+    return Text('Placeholder');
   }
   
   void _navigateToEditExpensesPage(Expense indivExpense) {
@@ -395,7 +400,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: InkWell(
-                //TODO Send to Individual Expenses Page
                 onTap: () {
                   _navigateToIndivExpensesPage(data[index]);
                 },
@@ -537,7 +541,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
       appBar: AppBar(
         title: Text(widget.budgetTitle.toString()),
       ),
-      //TODO Add Logic to Add New Expense & Edit Budget
       floatingActionButton: SpeedDial(
         backgroundColor: Colors.blue,
         spaceBetweenChildren: 10,
@@ -576,7 +579,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               ),
             ),
             printExpenseCard(),
-
           ],
         ),
       ),

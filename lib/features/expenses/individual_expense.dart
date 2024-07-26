@@ -19,7 +19,6 @@ class _IndividualExpenseState extends State<IndividualExpense> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('Individual Expense Details'),
