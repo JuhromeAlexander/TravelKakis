@@ -38,7 +38,8 @@ class _CreateBudgetState extends State<CreateBudget> {
       'budgetEndDate': _selectedTrip?.getTripEndDate(),
       'totalBudget': _totalBudgetController.text,
       'budgetStatusColor': "Colors.green",
-      'categoryList': _selectedCategories
+      'categoryList': _selectedCategories,
+      'userName': user_info.getUsername(),
     }).then((value) {
       //Add BudgetID to UserID as well
       user.doc(user_info.getID()).update({

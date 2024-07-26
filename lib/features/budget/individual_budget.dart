@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -127,8 +129,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
       String? budgetName = widget.budgetTitle;
       double expenseValue = 0.0;
 
-      print(i);
-      print(widget.categoryList!.length);
       CollectionReference expensesRef =
       FirebaseFirestore.instance.collection('expenses');
       QuerySnapshot querySnapshot = await expensesRef
@@ -143,16 +143,8 @@ class _IndividualBudgetState extends State<IndividualBudget> {
         expenseValue = double.parse(document.get('expenseCost').toString()) +
             expenseValue;
       });
-
-      print('After Map');
-      print('ExpenseValue');
-      print(expenseValue);
       collatedValues.add(expenseValue);
-      print('CollatedValues[i]');
-      print(collatedValues[i]);
     }
-    print('Printing Collated Values');
-    print(collatedValues);
     return collatedValues;
   }
 
@@ -365,9 +357,129 @@ class _IndividualBudgetState extends State<IndividualBudget> {
         });
   }
 
-  //TODO Implement Detailed Categories View
-  Widget _showDetailedCategoriesWidget() {
-    return Text('Placeholder');
+  _individualCategoryRow(context, expenseData) {
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Container(
+              width: MediaQuery.sizeOf(context).width,
+              height: 150.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    (widget.categoryList?[index]).toString(),
+                    style: const TextStyle(
+                      color: CupertinoColors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: LinearProgressIndicator(
+                          borderRadius:  BorderRadius.circular(20.0),
+                          minHeight: 20,
+                          value:  double.parse((expenseData[index] / widget.totalBudget).toStringAsFixed(1)),
+                          backgroundColor: Colors.grey[300],
+                          valueColor: AlwaysStoppedAnimation(Colors.grey[800]),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20.0,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          '${((expenseData[index] / widget.totalBudget).toStringAsFixed(0)).toString()}%',
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 20,
+                    width: MediaQuery.sizeOf(context).width,
+                  ),
+                  Text(
+                    'Total: \$${widget.totalBudget}',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
+                      color: CupertinoColors.black,
+                    ),
+                  ),
+                  Text(
+                    'Spent: \$${expenseData[index]}',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
+                      color: CupertinoColors.black,
+                    ),
+                  ),
+                  Text(
+                    'Remaining: \$${(widget.totalBudget! - expenseData[index])}',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
+                      color: CupertinoColors.black,
+                    ),
+                  ),
+                ],
+              ),
+            )
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Container(
+          width: MediaQuery.sizeOf(context).width,
+          height: 20.0,
+        );
+      },
+      itemCount: expenseData.length
+    );
+  }
+
+  _printCategoryCard() {
+    return Container(
+      width: MediaQuery.sizeOf(context).width,
+      height: 500.0,
+      margin: EdgeInsets.all(20.0),
+      color: CupertinoColors.systemGrey,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        margin: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FutureBuilder(
+              future: getCollatedExpenses(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  List data = snapshot.data;
+                  return Expanded(child: _individualCategoryRow(context, data));
+                }
+                if (!snapshot.hasData) {
+                  return const Text('No Detailed Categories Yet!');
+                }
+                if (snapshot.hasError) {
+                  return Text('Error Loading Categories ${snapshot.error.toString()}');
+                }
+                return const CircularProgressIndicator();
+              }
+            ),
+          ],
+        ),
+      ),
+    );
   }
   
   void _navigateToEditExpensesPage(Expense indivExpense) {
@@ -483,7 +595,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     );
   }
 
-  printExpenseCard() {
+  _printExpenseCard() {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       height: 500.0,
@@ -536,7 +648,6 @@ class _IndividualBudgetState extends State<IndividualBudget> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.budgetTitle.toString()),
@@ -571,6 +682,15 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             //TODO: Implement Collaborator
             _pieChartWidget(),
             const Text(
+              'Detailed Category View',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CupertinoColors.black,
+                  fontSize: 16.0
+              ),
+            ),
+            _printCategoryCard(),
+            const Text(
               'Expenses',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -578,7 +698,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 fontSize: 16.0
               ),
             ),
-            printExpenseCard(),
+            _printExpenseCard(),
           ],
         ),
       ),

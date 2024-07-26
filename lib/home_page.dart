@@ -10,6 +10,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 //anything after this is to be removed after finish testing
 import 'package:travel_kakis/features/trips/create_trip.dart';
+import 'package:travel_kakis/utils/frontend_test.dart';
 
 
 //This class controls the flow of the pages (i.e it contains bottom nav & screens
@@ -83,7 +84,8 @@ class _HomePageState extends State<HomePage> {
         const OverviewOfTrips(),
         const OverviewOfBudget(),
         //OverviewOfSuggestions(),
-        const CreateExpense(),
+        //const CreateExpense(),
+        FrontendTest(),
         const Profile()
       ][currentPageIndex],
     );

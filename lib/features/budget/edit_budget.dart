@@ -10,6 +10,8 @@ class EditBudget extends StatefulWidget{
 class _EditBudgetState extends State<EditBudget> {
 
   //TODO Implement Logic for Editing Budget
+  //Detailed Category Card - Budget + Categories
+  //Name + Assigned Trip + Categories
 
   @override
   Widget build(BuildContext context) {
