@@ -46,14 +46,18 @@ class _CreateActivityState extends State<CreateActivity> {
       'time': _activityTimeController.text,
       'title': _activityTitleController.text,
       'website': _activityWebsiteController.text,
-      'tripID': widget.documentSnapshot.id.toString()
+      'tripID': widget.documentSnapshot.id.toString(),
+      'source': '',
+      'destination': '',
+
     }).then((value) {
       widget.documentSnapshot.reference.update({
         'activities': FieldValue.arrayUnion([value]),
       });
     });
 
-    // widget.callback();
+    widget.callback();
+
     Navigator.pop(context);
   }
 

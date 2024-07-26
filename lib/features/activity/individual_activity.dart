@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:provider/provider.dart';
 import 'package:travel_kakis/features/activity/upload_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:travel_kakis/features/activity/edit_information.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
+import 'package:travel_kakis/features/activity/transport.dart';
 
 class IndividualActivity extends StatefulWidget {
   final DocumentSnapshot activityDocumentSnapshot;
@@ -27,6 +28,8 @@ class IndividualActivity extends StatefulWidget {
 }
 
 class _IndividualActivityState extends State<IndividualActivity> {
+  int _indicator = 0;
+
   //refresh data
   void callBack() {
     widget.tripCallback();
@@ -134,7 +137,6 @@ class _IndividualActivityState extends State<IndividualActivity> {
         ),
       ],
     );
-
     // return Container(
   }
 
@@ -143,6 +145,12 @@ class _IndividualActivityState extends State<IndividualActivity> {
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   //for uploading of files
@@ -154,83 +162,125 @@ class _IndividualActivityState extends State<IndividualActivity> {
       allowedExtensions: ['pdf', 'jpg', 'png', 'jpeg'],
     );
 
-    //TODO: the file folder must be unique so as to not overlap with other trips/activity/
-    //TODO: maybe for every trip & activity created, it can be assigned a unique ID
     if (pickedFile != null) {
       final path =
           '${user_info.getID()}/${widget.tripDocumentSnapshot.id}/${widget.activityDocumentSnapshot.id}/${pickedFile.files.first.name}';
       final file = File(pickedFile.files.first.path!);
-
       final ref = FirebaseStorage.instance.ref().child(path);
 
       ref.putFile(file);
     }
+
+    setState(() {
+
+    });
+
     return;
+  }
+
+  Future getData() async {
+    CollectionReference activity = FirebaseFirestore.instance.collection('activity');
+    DocumentReference specificActivity = activity.doc(widget.activityDocumentSnapshot.id);
+
+    final dataDoc = await specificActivity.get();
+    final data = dataDoc.data() as Map<String, dynamic>;
+
+
+
+    return data;
   }
 
   @override
   Widget build(BuildContext context) {
-    final data = widget.activityDocumentSnapshot.data() as Map<String, dynamic>;
+    // final data = widget.activityDocumentSnapshot.data() as Map<String, dynamic>;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(data['title']),
-      ),
-      floatingActionButton: SpeedDial(
-        backgroundColor: Colors.blue,
-        spaceBetweenChildren: 10,
-        spacing: 10,
-        icon: Icons.add,
-        children: [
-          SpeedDialChild(
-              child: Icon(Icons.train), label: 'Edit Transport', onTap: () {}),
-          SpeedDialChild(
-              child: Icon(Icons.upload_file),
-              label: 'Upload file',
-              onTap: () => selectFile()),
-          SpeedDialChild(
-              child: Icon(Icons.info_sharp),
-              label: 'Edit Information',
-              onTap: () => _navigateToEditInformation(
-                  context, widget.activityDocumentSnapshot, callBack)),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          //bottom half
-          Expanded(
-              flex: 7,
-              child: DefaultTabController(
-                  length: 3,
-                  child: Scaffold(
-                    appBar: AppBar(
-                      automaticallyImplyLeading: false,
-                      title: const TabBar(
-                        tabs: [
-                          Tab(
-                            text: 'Information',
-                          ),
-                          Tab(text: 'Documents'),
-                          Tab(text: 'Transport'),
-                        ],
-                      ),
-                    ),
-                    body: TabBarView(children: [
-                      printInformation(data),
-                      UploadFile(
-                        activityDocumentSnapshot:
-                            widget.activityDocumentSnapshot,
-                        tripDocumentSnapshot: widget.tripDocumentSnapshot,
-                      ),
-                      Center(child: Text('3')),
-                    ]),
-                  ))),
-        ],
-      ),
-    );
+        appBar: AppBar(
+            title: FutureBuilder(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data['title']);
+              } else {
+                return Text('no data');
+              }
+            } else if (snapshot.hasError) {
+              return Text('Error'); // error
+            } else {
+              return CircularProgressIndicator(); // loading
+            }
+          },
+        )),
+        floatingActionButton: SpeedDial(
+          backgroundColor: Colors.blue,
+          spaceBetweenChildren: 10,
+          spacing: 10,
+          icon: Icons.add,
+          children: [
+            SpeedDialChild(
+                child: Icon(Icons.upload_file),
+                label: 'Upload file',
+                onTap: () => selectFile()),
+            SpeedDialChild(
+                child: Icon(Icons.info_sharp),
+                label: 'Edit Information',
+                onTap: () => _navigateToEditInformation(
+                    context, widget.activityDocumentSnapshot, callBack)),
+          ],
+        ),
+        body: FutureBuilder(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: <Widget>[
+                      //bottom half
+                      Expanded(
+                          flex: 7,
+                          child: DefaultTabController(
+                              length: 3,
+                              child: Scaffold(
+                                appBar: AppBar(
+                                  automaticallyImplyLeading: false,
+                                  title: const TabBar(
+                                    tabs: [
+                                      Tab(
+                                        text: 'Information',
+                                      ),
+                                      Tab(text: 'Documents'),
+                                      Tab(text: 'Transport'),
+                                    ],
+                                  ),
+                                ),
+                                body: TabBarView(children: [
+                                  printInformation(snapshot.data),
+                                  UploadFile(
+                                    activityDocumentSnapshot:
+                                        widget.activityDocumentSnapshot,
+                                    tripDocumentSnapshot:
+                                        widget.tripDocumentSnapshot,
+                                  ),
+                                  Transport(
+                                  activityDocumentID: widget.activityDocumentSnapshot.id,
+                                  ),
+                                ]),
+                              ))),
+                    ],
+                  );
+                } else {
+                  return const Text('no Information');
+                }
+              } else if (snapshot.hasError) {
+                return Text('an Error has occured'); // error
+              } else {
+                return CircularProgressIndicator(); // loading
+              }
+            }));
   }
 }
 
-//TODO: to navigate to edit information
+//to navigate to edit information
 void _navigateToEditInformation(context, documentSnapshot, callBack) {
   Navigator.push(
     context,

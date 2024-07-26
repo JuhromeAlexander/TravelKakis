@@ -2,15 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/budget/create_budget.dart';
 import 'package:travel_kakis/features/budget/overview_of_budget.dart';
-import 'package:travel_kakis/features/expenses/create_expense.dart';
 import 'package:travel_kakis/features/profile_page/profile.dart';
+import 'package:travel_kakis/features/profile_page/profile_setting.dart';
+import 'package:travel_kakis/features/suggestions/overview_of_suggestions.dart';
+import 'package:travel_kakis/temp_for_add.dart';
 import 'package:travel_kakis/utils/bottom_navigation.dart';
 import 'package:travel_kakis/features/trips/overview_of_trips.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 //anything after this is to be removed after finish testing
 import 'package:travel_kakis/features/trips/create_trip.dart';
-import 'package:travel_kakis/utils/frontend_test.dart';
+import 'package:travel_kakis/features/trips/individual_trip.dart';
 
 
 //This class controls the flow of the pages (i.e it contains bottom nav & screens
@@ -26,6 +28,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //current page for bottom nav
   int currentPageIndex = 0;
+
+  callback() {
+    print('hi');
+    setState(() {});
+  }
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -47,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: signUserOut,
-            icon: const Icon(Icons.logout),
+            icon: Icon(Icons.logout),
           )
         ],
       ),
@@ -59,14 +66,14 @@ class _HomePageState extends State<HomePage> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-            child: const Icon(Icons.airplanemode_active),
+            child: Icon(Icons.airplanemode_active),
             label: 'Create Trip',
             onTap: (){
-              _navigateToCreateTrip(context);
+              _navigateToCreateTrip(context, callback);
             }
           ),
           SpeedDialChild(
-              child: const Icon(Icons.attach_money),
+              child: Icon(Icons.attach_money),
               label: 'Create budget',
               onTap: (){
                 _navigateToCreateBudget(context);
@@ -81,28 +88,26 @@ class _HomePageState extends State<HomePage> {
           onClicked: botNavOnClick
       ),
       body: <Widget>[
-        const OverviewOfTrips(),
-        const OverviewOfBudget(),
-        //OverviewOfSuggestions(),
-        //const CreateExpense(),
-        FrontendTest(),
-        const Profile()
+        OverviewOfTrips(),
+        OverviewOfBudget(),
+        OverviewOfSuggestions(),
+        Profile()
       ][currentPageIndex],
     );
   }
 }
 
 //navigate to create trip
-void _navigateToCreateTrip(context) {
+void _navigateToCreateTrip(context, callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const CreateTrip()),
+    MaterialPageRoute(builder: (context) => CreateTrip(callback: callback,)),
   );
 }
 
 void _navigateToCreateBudget(context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const CreateBudget()),
+    MaterialPageRoute(builder: (context) => CreateBudget()),
   );
 }

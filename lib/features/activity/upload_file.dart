@@ -9,7 +9,7 @@ class UploadFile extends StatefulWidget {
   final DocumentSnapshot activityDocumentSnapshot;
   final DocumentSnapshot tripDocumentSnapshot;
 
-  const UploadFile({
+   UploadFile({
     super.key,
     required this.tripDocumentSnapshot,
     required this.activityDocumentSnapshot,
@@ -100,6 +100,10 @@ class UploadFileState extends State<UploadFile> {
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                 if (snapshot.hasData) {
                   return ListTile(
+                    leading: ElevatedButton(
+                      child: Text('test'),
+                      onPressed: () => callBack(),
+                    ),
                     trailing: PopupMenuButton<int>(
                         onSelected: (value) {},
                         itemBuilder: (BuildContext context) {
