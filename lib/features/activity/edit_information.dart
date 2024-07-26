@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:travel_kakis/features/activity/activity.dart';
 
 class EditInformation extends StatefulWidget {
-  //document snapshot of trip
   final DocumentSnapshot documentSnapshot;
   final Function callback;
 
@@ -21,7 +20,6 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
 
-
   late final TextEditingController _activityTitleController;
   late final TextEditingController _activityDateController;
   late final TextEditingController _activityDescriptionController;
@@ -36,6 +34,7 @@ class _EditInformationState extends State<EditInformation> {
 
   @override
   void initState() {
+    super.initState();
     final data = widget.documentSnapshot.data() as Map<String, dynamic>;
 
     _startDate = DateTime.parse(data['date']);
@@ -73,7 +72,8 @@ class _EditInformationState extends State<EditInformation> {
     });
     //
     widget.callback();
-    Navigator.pop(context, );
+
+    Navigator.pop(context);
   }
 
 //Calendar
@@ -288,7 +288,7 @@ class _EditInformationState extends State<EditInformation> {
                         minimumSize: const Size(double.infinity, 40),
                       ),
                       child: const Text(
-                          style: TextStyle(color: Colors.white), 'Create'),
+                          style: TextStyle(color: Colors.white), 'Edit'),
                     ),
                   )
                 ],
