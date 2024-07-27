@@ -52,17 +52,17 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         print(data['totalBudget']);
         print(data['totalBudget'] - data['budgetSpent']);
         budgetList.add(Budgets(
-             budgetTitle: data['budgetTitle'].toString(),
-             budgetStartDate: data['budgetStartDate'].toString(),
-             budgetEndDate: data['budgetEndDate'].toString(),
-             totalBudget: data['totalBudget'],
-             budgetSpent: data['budgetSpent'],
-             budgetRemaining: data['totalBudget'] - data['budgetSpent'],
-             budgetCardIndicatorValue:
-                (data['budgetSpent'] / data['totalBudget']) * 100,
-             budgetStatusColor: data['budgetStatusColor'],
-             categoryList: data['categoryList'],
-             userName: data['userName']
+            budgetTitle: data['budgetTitle'].toString(),
+            budgetStartDate: data['budgetStartDate'].toString(),
+            budgetEndDate: data['budgetEndDate'].toString(),
+            totalBudget: data['totalBudget'],
+            budgetSpent: data['budgetSpent'],
+            budgetRemaining: data['totalBudget'] - data['budgetSpent'],
+            budgetCardIndicatorValue:
+              (data['budgetSpent'] / data['totalBudget']) * 100,
+            budgetStatusColor: data['budgetStatusColor'],
+            categoryList: data['categoryList'],
+            userName: data['userName']
         ));
       });
     }
@@ -112,8 +112,8 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                   children: [
                     Container(
                       height: 200.0,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.darkBackgroundGray,
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
                       child: Container(
@@ -129,38 +129,45 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 8,
+                                  flex: 7,
                                   child: LinearProgressIndicator(
                                     value: data[index].getBudgetCardIndicatorValue(),
-                                    backgroundColor: Colors.grey[300],
-                                    valueColor:
-                                    AlwaysStoppedAnimation(Colors.grey[800]),
+                                    backgroundColor: CupertinoColors.white,
+                                    valueColor: const AlwaysStoppedAnimation(CupertinoColors.systemGrey),
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 20.0,
                                 ),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Text(
-                                    (data[index].getBudgetCardIndicatorValue()).toString(),
+                                    '${(data[index].getBudgetCardIndicatorValue()).toString()}%',
+                                    style: const TextStyle(
+                                      color: CupertinoColors.white,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(
-                              height: 15.0,
+                              height: 5.0,
                             ),
                             Text(
-                              (data[index].getBudgetSpent()).toString(),
+                              'Budget Spent: \$${(data[index].getBudgetSpent()).toString()}',
                               style: const TextStyle(
-                                color: Colors.grey,
+                                color: CupertinoColors.systemGrey,
                               ),
                             ),
-                            Text(
-                              (data[index].getBudgetRemaining()).toString(),
+                            (data[index].getBudgetRemaining()! < 0) ? Text(
+                              'Budget Remaining: \$${data[index].getBudgetRemaining()!.toString()}',
                               style: const TextStyle(
-                                color: Colors.grey,
+                                color: CupertinoColors.systemRed,
+                              ),
+                            ) : Text(
+                              'Budget Remaining: \$${data[index].getBudgetRemaining()!.toString()}',
+                              style: const TextStyle(
+                                color: CupertinoColors.systemGreen,
                               ),
                             ),
                           ],
@@ -171,7 +178,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                       //Contains Status Bar and Budget Title
                       height: 100.0,
                       decoration: const BoxDecoration(
-                        color: Colors.blue,
+                        color: CupertinoColors.systemGrey,
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20.0),
                           bottomRight: Radius.circular(20.0),
@@ -193,7 +200,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                     child: Text(
                                       data[index].getBudgetTitle(),
                                       style: const TextStyle(
-                                        color: Colors.grey,
+                                        color: CupertinoColors.black,
                                       ),
                                     ),
                                   ),
@@ -202,7 +209,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                     child: Text(
                                       data[index].getBudgetStartDate(),
                                       style: const TextStyle(
-                                        color: Colors.grey,
+                                        color: CupertinoColors.black,
                                       ),
                                     ),
                                   ),
@@ -211,7 +218,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                     child: Text(
                                       data[index].getBudgetEndDate(),
                                       style: const TextStyle(
-                                        color: Colors.grey,
+                                        color: CupertinoColors.black,
                                       ),
                                     ),
                                   ),

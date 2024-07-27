@@ -154,7 +154,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           Container(
             height: 200.0,
             decoration: const BoxDecoration(
-                color: Colors.red,
+                color: CupertinoColors.darkBackgroundGray,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0),
@@ -174,37 +174,45 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 8,
+                        flex: 7,
                         child: LinearProgressIndicator(
                           value: widget.budgetCardIndicatorValue,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation(Colors.grey[800]),
+                          backgroundColor: CupertinoColors.white,
+                          valueColor: AlwaysStoppedAnimation(CupertinoColors.systemGrey),
                         ),
                       ),
                       const SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Text(
-                          widget.budgetCardIndicatorValue.toString(),
+                          '${widget.budgetCardIndicatorValue.toString()}%',
+                          style: const TextStyle(
+                            color: CupertinoColors.white,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(
-                    height: 15.0,
+                    height: 5.0,
                   ),
                   Text(
-                    widget.budgetSpent.toString(),
+                    'Budget Spent: \$${widget.budgetSpent.toString()}',
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: CupertinoColors.systemGrey,
                     ),
                   ),
-                  Text(
-                    widget.budgetRemaining.toString(),
+                  (widget.budgetRemaining! < 0) ? Text(
+                    'Budget Remaining: \$${widget.budgetRemaining.toString()}',
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: CupertinoColors.systemRed,
+                    ),
+                  ) : Text(
+                    'Budget Remaining: \$${widget.budgetRemaining.toString()}',
+                    style: const TextStyle(
+                      color: CupertinoColors.systemGreen,
                     ),
                   ),
                 ],
@@ -215,7 +223,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             //Contains Status Bar and Budget Title
             height: 100.0,
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: CupertinoColors.systemGrey,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20.0),
                 bottomRight: Radius.circular(20.0),
@@ -237,7 +245,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                           child: Text(
                             widget.budgetTitle.toString(),
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: CupertinoColors.black,
                             ),
                           ),
                         ),
@@ -246,7 +254,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                           child: Text(
                             widget.budgetStartDate.toString(),
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: CupertinoColors.black,
                             ),
                           ),
                         ),
@@ -255,7 +263,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                           child: Text(
                             widget.budgetEndDate.toString(),
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: CupertinoColors.black,
                             ),
                           ),
                         ),

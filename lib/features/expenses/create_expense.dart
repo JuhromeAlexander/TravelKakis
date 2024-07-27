@@ -47,7 +47,28 @@ class _CreateExpenseState extends State<CreateExpense> {
     });
   }
 
-  //TODO Update the Budget Value Spent When Creating an Expense
+  void updateBudget() async {
+    String documentID = '';
+    var expenseCost;
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    QuerySnapshot querySnapshot = await budget
+      .where('budgetTitle', isEqualTo: _budgetController.text)
+      .where('userName', isEqualTo: user_info.getUsername())
+      .get();
+
+    List<DocumentSnapshot> budgetDoc = querySnapshot.docs;
+    budgetDoc.forEach((document) {
+      documentID = document.id.toString();
+      expenseCost = document.get('budgetSpent')
+          + double.parse(_expenseCostController.text);
+    });
+
+    print(documentID);
+    budget.doc(documentID).update({
+      'budgetSpent' : expenseCost
+    });
+    Navigator.pop(context);
+  }
 
   Future<List<Budgets>> getBudgetData() async {
     List budgetDoc = [];
@@ -128,7 +149,6 @@ class _CreateExpenseState extends State<CreateExpense> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Expense'),
@@ -293,7 +313,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: addExpense,
+                    onPressed: () {
+                      addExpense();
+                      updateBudget();
+                    },
                     child: const Text('Create')
                   ),
                 ],
