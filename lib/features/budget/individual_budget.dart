@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:travel_kakis/features/budget/edit_budget.dart';
+import 'package:travel_kakis/features/categories/overview_categories.dart';
 import 'package:travel_kakis/features/expenses/Expense.dart';
 import 'package:travel_kakis/features/expenses/create_expense.dart';
 import 'package:travel_kakis/features/expenses/edit_expense.dart';
@@ -688,6 +689,13 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     );
   }
 
+  void _navigateToManageCategories(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OverviewCategories()),
+    );
+  }
+
   void _closeBudgetStatus() async {
     String documentID = '';
     String budgetStatusColor = '';
@@ -763,7 +771,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-              child: const Icon(Icons.attach_money_sharp),
+              child: const Icon(Icons.receipt),
               label: 'Add Expense',
               onTap: (){
                 _navigateToCreateExpense(context);
@@ -793,6 +801,13 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 });
               }
           ),
+          SpeedDialChild(
+              child: const Icon(Icons.category_sharp),
+              label: 'Manage Categories',
+              onTap: (){
+                _navigateToManageCategories(context);
+              }
+          )
         ],
       ),
       body: SingleChildScrollView(

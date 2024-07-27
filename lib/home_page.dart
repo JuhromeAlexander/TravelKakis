@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_kakis/features/budget/create_budget.dart';
 import 'package:travel_kakis/features/budget/overview_of_budget.dart';
+import 'package:travel_kakis/features/categories/overview_categories.dart';
 import 'package:travel_kakis/features/profile_page/profile.dart';
 import 'package:travel_kakis/features/profile_page/profile_setting.dart';
 import 'package:travel_kakis/features/suggestions/overview_of_suggestions.dart';
@@ -90,7 +91,8 @@ class _HomePageState extends State<HomePage> {
       body: <Widget>[
         OverviewOfTrips(),
         OverviewOfBudget(),
-        OverviewOfSuggestions(),
+        //OverviewOfSuggestions(),
+        OverviewCategories(),
         Profile()
       ][currentPageIndex],
     );
