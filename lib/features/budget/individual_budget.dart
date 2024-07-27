@@ -679,7 +679,11 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CreateExpense()),
-    );
+    ).then((_) {
+      setState(() {
+
+      });
+    });
   }
 
   void _navigateToEditBudget(context) {
