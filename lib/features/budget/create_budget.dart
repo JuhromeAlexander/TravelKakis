@@ -37,7 +37,7 @@ class _CreateBudgetState extends State<CreateBudget> {
       'budgetStartDate': _selectedTrip?.getTripStartDate(),
       'budgetEndDate': _selectedTrip?.getTripEndDate(),
       'totalBudget': 0,
-      'budgetStatusColor': "Colors.green",
+      'budgetStatusColor': "CupertinoColors.systemGreen",
       'categoryList': _selectedCategories,
       'userName': user_info.getUsername(),
       'tripName': _selectedTrip?.getTripTitle(),

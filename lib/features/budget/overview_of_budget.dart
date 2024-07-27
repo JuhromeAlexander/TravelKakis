@@ -39,19 +39,12 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
       refLength = data['budgets'].length;
       budgetDoc = data['budgets'];
     });
-    print('After GetUsert');
+    print('After GetUser');
     print(budgetDoc);
     for (int i = 0; i < refLength; i++) {
       print(i);
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
-        print('Printing Cat List');
-        print(data['categoryList']);
-        print(data['userName']);
-        print(data['budgetSpent']);
-        print(data['totalBudget']);
-        print(data['totalBudget'] - data['budgetSpent']);
-        print(refLength);
         budgetList.add(Budgets(
                budgetTitle: data['budgetTitle'].toString(),
                budgetStartDate: data['budgetStartDate'].toString(),
@@ -69,7 +62,6 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         print('After Adding to Budget List');
       });
     }
-    print(budgetList);
     return budgetList;
   }
 
@@ -237,7 +229,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                       child: Container(
                         width: 100,
                         decoration: BoxDecoration(
-                            color: data[index].getBudgetStatusColor() == "Colors.green" ? Colors.green : Colors.red,
+                            color: data[index].getBudgetStatusColor() == "CupertinoColors.systemGreen" ? CupertinoColors.systemGreen : CupertinoColors.systemRed,
                             borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20.0),
                             )
@@ -246,8 +238,13 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                           horizontal: 29.0,
                           vertical: 4.0,
                         ),
-                        child: const Text(
-                          'Status',
+                        child: data[index].getBudgetStatusColor() == "CupertinoColors.systemGreen" ? const Text(
+                          'Open',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ) : const Text(
+                          'Close',
                           style: TextStyle(
                             color: Colors.white,
                           ),

@@ -8,6 +8,7 @@ import 'package:travel_kakis/features/expenses/Expense.dart';
 import 'package:travel_kakis/features/expenses/create_expense.dart';
 import 'package:travel_kakis/features/expenses/edit_expense.dart';
 import 'package:travel_kakis/features/expenses/individual_expense.dart';
+import 'package:travel_kakis/home_page.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'dart:math' as math;
 
@@ -135,10 +136,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           .get();
 
       List<DocumentSnapshot> expenseDocs = querySnapshot.docs;
-      print('before for loop DEBUF');
       expenseDocs.forEach((document) {
-        print('Document Expense COST DEBUGGING');
-        print(document.get('expenseCost'));
         expenseValue = double.parse(document.get('expenseCost').toString()) +
             expenseValue;
       });
@@ -281,9 +279,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             alignment: Alignment.topRight,
             child: Container(
               decoration: BoxDecoration(
-                color: widget.budgetStatusColor == "Colors.green"
-                    ? Colors.green
-                    : Colors.red,
+                color: widget.budgetStatusColor.toString() == 'CupertinoColors.systemGreen' ? CupertinoColors.systemGreen : CupertinoColors.systemRed,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20.0),
                 ),
@@ -292,8 +288,13 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                 horizontal: 29.0,
                 vertical: 4.0,
               ),
-              child: const Text(
-                'Status',
+              child: widget.budgetStatusColor.toString() == 'CupertinoColors.systemGreen' ? const Text(
+                'Open',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ) : const Text(
+                'Close',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -367,8 +368,30 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           return const CircularProgressIndicator();
         });
   }
+  
+  Future<List> getBudgetDataValueList() async {
+    String documentID = '';
+    late List budgetValueData;
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    QuerySnapshot querySnapshot = await budget
+      .where('budgetTitle', isEqualTo: widget.budgetTitle)
+      .where('userName', isEqualTo: user_info.getUsername())
+      .get();
 
-  _individualCategoryRow(context, expenseData) {
+    List<DocumentSnapshot> budgetDoc = querySnapshot.docs;
+    for (int i = 0; i < budgetDoc.length; i++) {
+      documentID = budgetDoc[i].id.toString();
+    }
+
+    DocumentReference exactBudgetDoc = budget.doc(documentID);
+    await exactBudgetDoc.get().then((document) {
+      budgetValueData = document.get('budgetList');
+    });
+
+    return budgetValueData;
+  }
+
+  _individualCategoryRow(context, expenseData, budgetData) {
     return ListView.separated(
       itemBuilder: (context, index) {
         return Card(
@@ -420,7 +443,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                     width: MediaQuery.sizeOf(context).width,
                   ),
                   Text(
-                    'Total: \$${widget.totalBudget}',
+                    'Total: \$${budgetData[index]}',
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w300,
@@ -480,11 +503,11 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             FutureBuilder(
-              future: getCollatedExpenses(),
+              future: Future.wait([getCollatedExpenses(), getBudgetDataValueList()]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   List data = snapshot.data;
-                  return Expanded(child: _individualCategoryRow(context, data));
+                  return Expanded(child: _individualCategoryRow(context, data[0], data[1]));
                 }
                 if (!snapshot.hasData) {
                   return const Text('No Detailed Categories Yet!');
@@ -665,6 +688,68 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     );
   }
 
+  void _closeBudgetStatus() async {
+    String documentID = '';
+    String budgetStatusColor = '';
+
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    QuerySnapshot querySnapshot = await budget
+      .where('budgetTitle', isEqualTo: widget.budgetTitle)
+      .where('userName', isEqualTo: user_info.getUsername())
+      .get();
+
+    List<DocumentSnapshot> budgetDoc = querySnapshot.docs;
+
+    for (int i = 0; i < budgetDoc.length; i++) {
+      documentID = budgetDoc[i].id.toString();
+    }
+
+    DocumentReference exactBudgetDoc = budget.doc(documentID);
+    await exactBudgetDoc.get().then((document) {
+      budgetStatusColor = document.get('budgetStatusColor');
+    });
+
+    exactBudgetDoc.update({
+      'budgetStatusColor': 'CupertinoColors.systemRed',
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
+  void _openBudgetStatus() async {
+    String documentID = '';
+    String budgetStatusColor = '';
+
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    QuerySnapshot querySnapshot = await budget
+        .where('budgetTitle', isEqualTo: widget.budgetTitle)
+        .where('userName', isEqualTo: user_info.getUsername())
+        .get();
+
+    List<DocumentSnapshot> budgetDoc = querySnapshot.docs;
+
+    for (int i = 0; i < budgetDoc.length; i++) {
+      documentID = budgetDoc[i].id.toString();
+    }
+
+    DocumentReference exactBudgetDoc = budget.doc(documentID);
+    await exactBudgetDoc.get().then((document) {
+      budgetStatusColor = document.get('budgetStatusColor');
+    });
+
+    exactBudgetDoc.update({
+      'budgetStatusColor': 'CupertinoColors.systemGreen',
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -690,7 +775,24 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               onTap: (){
                 _navigateToEditBudget(context);
               }
-          )
+          ),
+          widget.budgetStatusColor.toString() == 'CupertinoColors.systemGreen' ? SpeedDialChild(
+              child: const Icon(Icons.close),
+              label: 'Close Budget',
+              onTap: (){
+                setState(() {
+                  _closeBudgetStatus();
+                });
+              }
+          ) : SpeedDialChild(
+              child: const Icon(Icons.close),
+              label: 'Open Budget',
+              onTap: (){
+                setState(() {
+                  _openBudgetStatus();
+                });
+              }
+          ),
         ],
       ),
       body: SingleChildScrollView(
