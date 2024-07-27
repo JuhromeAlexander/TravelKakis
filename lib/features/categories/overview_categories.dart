@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:travel_kakis/features/categories/add_category.dart';
+import 'package:travel_kakis/features/categories/edit_category.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
 import '../../models/Categories.dart';
@@ -57,16 +58,30 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
               margin: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 1,
+                    flex: 5,
                     child: Text(
                       data[index].getCategoryName(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
                         color: CupertinoColors.black,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      onPressed: () {
+                        _navigateToEditCategory(context,
+                          data[index].getCategoryName(),
+                          data[index].getCategoryType()
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.edit,
                       ),
                     ),
                   ),
@@ -155,22 +170,36 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
                 height: 75.0,
                 margin: const EdgeInsets.all(5.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        data[index].getCategoryName(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: CupertinoColors.black,
-                        ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: Text(
+                      data[index].getCategoryName(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        color: CupertinoColors.black,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      onPressed: () {
+                        _navigateToEditCategory(context,
+                            data[index].getCategoryName(),
+                            data[index].getCategoryType()
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               ),
             ),
           );
@@ -226,6 +255,20 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
       });
     });
   }
+
+  _navigateToEditCategory(context, categoryTitle, categoryType) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EditCategory(
+          categoryTitle: categoryTitle,
+          categoryType: categoryType
+        ))
+    ).then((_) {
+      setState(() {
+
+      });
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -249,13 +292,6 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
               ),
               SpeedDialChild(
                   child: const Icon(Icons.attach_money_sharp),
-                  label: 'Edit Category',
-                  onTap: (){
-                    //_navigateToCreateExpense(context);
-                  }
-              ),
-              SpeedDialChild(
-                  child: const Icon(Icons.attach_money_sharp),
                   label: 'Delete Category',
                   onTap: (){
                     //_navigateToCreateExpense(context);
@@ -270,7 +306,7 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
                   Tab(text: 'Expenses', icon: Icon(Icons.receipt),)
                 ]
             ),
-            title: Text('Categories'),
+            title: const Text('Categories'),
           ),
           body: TabBarView(
             children: [
