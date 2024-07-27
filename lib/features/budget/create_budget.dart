@@ -23,7 +23,7 @@ class _CreateBudgetState extends State<CreateBudget> {
   final TextEditingController _tripController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _budgetNameController = TextEditingController();
-  final TextEditingController _totalBudgetController = TextEditingController();
+  //final TextEditingController _totalBudgetController = TextEditingController();
 
   //Writing Data
   void addData() async {
@@ -36,10 +36,11 @@ class _CreateBudgetState extends State<CreateBudget> {
       'budgetTitle': _budgetNameController.text,
       'budgetStartDate': _selectedTrip?.getTripStartDate(),
       'budgetEndDate': _selectedTrip?.getTripEndDate(),
-      'totalBudget': _totalBudgetController.text,
+      'totalBudget': 0,
       'budgetStatusColor': "Colors.green",
       'categoryList': _selectedCategories,
       'userName': user_info.getUsername(),
+      'tripName': _selectedTrip?.getTripTitle(),
     }).then((value) {
       //Add BudgetID to UserID as well
       user.doc(user_info.getID()).update({

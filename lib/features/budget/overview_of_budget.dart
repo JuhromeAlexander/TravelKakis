@@ -51,19 +51,22 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
         print(data['budgetSpent']);
         print(data['totalBudget']);
         print(data['totalBudget'] - data['budgetSpent']);
+        print(refLength);
         budgetList.add(Budgets(
-            budgetTitle: data['budgetTitle'].toString(),
-            budgetStartDate: data['budgetStartDate'].toString(),
-            budgetEndDate: data['budgetEndDate'].toString(),
-            totalBudget: data['totalBudget'],
-            budgetSpent: data['budgetSpent'],
-            budgetRemaining: data['totalBudget'] - data['budgetSpent'],
-            budgetCardIndicatorValue:
-              (data['budgetSpent'] / data['totalBudget']) * 100,
-            budgetStatusColor: data['budgetStatusColor'],
-            categoryList: data['categoryList'],
-            userName: data['userName']
+               budgetTitle: data['budgetTitle'].toString(),
+               budgetStartDate: data['budgetStartDate'].toString(),
+               budgetEndDate: data['budgetEndDate'].toString(),
+               totalBudget: data['totalBudget'],
+               budgetSpent: data['budgetSpent'],
+               budgetRemaining: data['totalBudget'] - data['budgetSpent'],
+               budgetCardIndicatorValue: double.parse(
+                   ((data['budgetSpent'] / data['totalBudget']) * 100).toStringAsFixed(2)
+               ),
+               budgetStatusColor: data['budgetStatusColor'],
+               categoryList: data['categoryList'],
+               userName: data['userName'],
         ));
+        print('After Adding to Budget List');
       });
     }
     print(budgetList);
@@ -131,7 +134,7 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                 Expanded(
                                   flex: 7,
                                   child: LinearProgressIndicator(
-                                    value: data[index].getBudgetCardIndicatorValue(),
+                                    value: double.parse(data[index].getBudgetCardIndicatorValue().toString()),
                                     backgroundColor: CupertinoColors.white,
                                     valueColor: const AlwaysStoppedAnimation(CupertinoColors.systemGrey),
                                   ),
@@ -159,13 +162,13 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
                                 color: CupertinoColors.systemGrey,
                               ),
                             ),
-                            (data[index].getBudgetRemaining()! < 0) ? Text(
-                              'Budget Remaining: \$${data[index].getBudgetRemaining()!.toString()}',
+                            ((data[index].getBudgetRemaining()) < 0) ? Text(
+                              'Budget Remaining: \$${data[index].getBudgetRemaining().toString()}',
                               style: const TextStyle(
                                 color: CupertinoColors.systemRed,
                               ),
                             ) : Text(
-                              'Budget Remaining: \$${data[index].getBudgetRemaining()!.toString()}',
+                              'Budget Remaining: \$${data[index].getBudgetRemaining().toString()}',
                               style: const TextStyle(
                                 color: CupertinoColors.systemGreen,
                               ),

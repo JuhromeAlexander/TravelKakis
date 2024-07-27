@@ -3,10 +3,10 @@ class Budgets {
   final String? budgetTitle;
   final String? budgetStartDate;
   final String? budgetEndDate;
-  final int? totalBudget;
-  final int? budgetSpent;
-  final int? budgetRemaining;
-  final double? budgetCardIndicatorValue;
+  final num? totalBudget;
+  final num? budgetSpent;
+  final num? budgetRemaining;
+  final num? budgetCardIndicatorValue;
   final String? budgetStatusColor;
   final List? expensesList;
   final List? categoryList;
@@ -44,19 +44,19 @@ class Budgets {
     return budgetEndDate;
   }
 
-  int? getTotalBudget() {
+  num? getTotalBudget() {
     return totalBudget;
   }
 
-  int? getBudgetSpent() {
+  num? getBudgetSpent() {
     return budgetSpent;
   }
 
-  int? getBudgetRemaining() {
+  num? getBudgetRemaining() {
     return budgetRemaining;
   }
 
-  double? getBudgetCardIndicatorValue() {
+  num? getBudgetCardIndicatorValue() {
     return budgetCardIndicatorValue;
   }
 

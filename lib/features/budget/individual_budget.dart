@@ -17,10 +17,10 @@ class IndividualBudget extends StatefulWidget {
   final String? budgetTitle;
   final DateTime? budgetStartDate;
   final DateTime? budgetEndDate;
-  final int? totalBudget;
-  final int? budgetSpent;
-  final int? budgetRemaining;
-  final double? budgetCardIndicatorValue;
+  final num? totalBudget;
+  final num? budgetSpent;
+  final num? budgetRemaining;
+  final num? budgetCardIndicatorValue;
   final String? budgetStatusColor;
   final List? categoryList;
   final String? userName;
@@ -135,7 +135,10 @@ class _IndividualBudgetState extends State<IndividualBudget> {
           .get();
 
       List<DocumentSnapshot> expenseDocs = querySnapshot.docs;
+      print('before for loop DEBUF');
       expenseDocs.forEach((document) {
+        print('Document Expense COST DEBUGGING');
+        print(document.get('expenseCost'));
         expenseValue = double.parse(document.get('expenseCost').toString()) +
             expenseValue;
       });
@@ -176,7 +179,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
                       Expanded(
                         flex: 7,
                         child: LinearProgressIndicator(
-                          value: widget.budgetCardIndicatorValue,
+                          value: widget.budgetCardIndicatorValue?.toDouble(),
                           backgroundColor: CupertinoColors.white,
                           valueColor: AlwaysStoppedAnimation(CupertinoColors.systemGrey),
                         ),
@@ -658,7 +661,7 @@ class _IndividualBudgetState extends State<IndividualBudget> {
   void _navigateToEditBudget(context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EditBudget()),
+      MaterialPageRoute(builder: (context) => EditBudget(budgetTitle: widget.budgetTitle, categoryList: widget.categoryList,)),
     );
   }
 
