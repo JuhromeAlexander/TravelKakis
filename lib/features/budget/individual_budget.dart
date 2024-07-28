@@ -772,6 +772,46 @@ class _IndividualBudgetState extends State<IndividualBudget> {
     );
   }
 
+  void _deleteBudget() async{
+    String documentID = '';
+
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    QuerySnapshot querySnapshot = await budget
+        .where('budgetTitle', isEqualTo: widget.budgetTitle)
+        .where('userName', isEqualTo: user_info.getUsername())
+        .get();
+
+    List<DocumentSnapshot> budgetDoc = querySnapshot.docs;
+
+    print(budgetDoc[0].id);
+    print('/budget/${budgetDoc[0].id}');
+
+    for (int i = 0; i < budgetDoc.length; i++) {
+      documentID = budgetDoc[i].id.toString();
+    }
+
+    String budgetRefString = 'budget/${budgetDoc[0].id}';
+    final userCollection = FirebaseFirestore.instance.collection('users').doc(user_info.getID());
+    final userDocSnap = await userCollection.get();
+    List userBudgets = userDocSnap.get('budgets');
+
+    for (int i = 0; i < userBudgets.length; i++) {
+      if (userBudgets[i].path == budgetRefString) {
+        await userCollection.update({
+          "budgets": FieldValue.arrayRemove([userBudgets[i]])
+        });
+      }
+    }
+
+    DocumentReference exactBudgetDoc = budget.doc(documentID);
+    await exactBudgetDoc.delete().then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -820,6 +860,13 @@ class _IndividualBudgetState extends State<IndividualBudget> {
               label: 'Manage Categories',
               onTap: (){
                 _navigateToManageCategories(context);
+              }
+          ),
+          SpeedDialChild(
+              child: const Icon(Icons.delete),
+              label: 'Delete Budget',
+              onTap: (){
+                _deleteBudget();
               }
           )
         ],
