@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_kakis/features/budget/Budgets.dart';
 import 'package:travel_kakis/features/budget/individual_budget.dart';
 
 class DefineBudget extends StatefulWidget {
@@ -48,8 +49,16 @@ class DynamicCategoryCard extends StatelessWidget {
 class _DefineBudgetState extends State<DefineBudget> {
 
   List<DynamicCategoryCard> dynamicList = [];
+  String documentID = '';
 
-  void updateBudget() {
+
+  DateTime returnDate(String date) {
+    DateTime dateFormat = DateTime(int.parse(date.split('-')[0]),
+        int.parse(date.split('-')[1]), int.parse(date.split('-')[2]));
+    return dateFormat;
+  }
+
+  void updateBudget() async {
     List data = [];
     int budgetTotal = 0;
 
@@ -59,16 +68,52 @@ class _DefineBudgetState extends State<DefineBudget> {
     }
 
     DocumentReference budgetRef = widget.budgetUID;
-    budgetRef.update({
+    await budgetRef.update({
       "budgetList": data,
       "totalBudget": budgetTotal,
       "budgetSpent": 0,
       "budgetCardIndicatorValue": 1.0
     });
 
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => const IndividualBudget())
-    );
+    // Navigator.push(context, MaterialPageRoute(
+    //     builder: (context) => const IndividualBudget())
+    // );
+  }
+
+  void getBudgetData() {
+    CollectionReference budget = FirebaseFirestore.instance.collection('budget');
+    budget.doc(widget.budgetUID.id).get().then((document) {
+      setState(() {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => IndividualBudget(
+              budgetTitle: document.get('budgetTitle'),
+              budgetStartDate: returnDate(document.get('budgetStartDate')),
+              budgetEndDate: returnDate(document.get('budgetEndDate')),
+              totalBudget: document.get('totalBudget'),
+              budgetSpent: document.get('budgetSpent'),
+              budgetRemaining: document.get('totalBudget'),
+              budgetCardIndicatorValue: document.get('budgetCardIndicatorValue'),
+              budgetStatusColor:document.get('budgetStatusColor'),
+              categoryList:document.get('categoryList'),
+              userName: document.get('userName'),
+            )),
+        );
+        // newBudget = Budgets(
+        //     budgetTitle: document.get('budgetTitle'),
+        //     budgetStartDate: document.get('budgetStartDate'),
+        //     budgetEndDate: document.get('budgetEndDate'),
+        //     totalBudget: document.get('totalBudget'),
+        //     budgetSpent: document.get('budgetSpent'),
+        //     budgetRemaining: document.get('totalBudget'),
+        //     budgetStatusColor: document.get('budgetStatusColor'),
+        //     budgetCardIndicatorValue: document.get('budgetCardIndicatorValue'),
+        //     categoryList: document.get('categoryList'),
+        //     userName: document.get('userName')
+        // );
+      });
+    });
+
+
   }
 
   @override
@@ -92,7 +137,10 @@ class _DefineBudgetState extends State<DefineBudget> {
             ),
           ),
           ElevatedButton(
-            onPressed: updateBudget,
+            onPressed: () {
+              updateBudget();
+              getBudgetData();
+            },
             child: const Text('Create Budget'),
             //child: Text(widget.budgetUID),
           ),

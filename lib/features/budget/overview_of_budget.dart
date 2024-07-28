@@ -43,8 +43,10 @@ class _OverviewOfBudgetState extends State<OverviewOfBudget> {
     print(budgetDoc);
     for (int i = 0; i < refLength; i++) {
       print(i);
+      print(budgetDoc[i].get());
       await budgetDoc[i].get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print(data);
         budgetList.add(Budgets(
                budgetTitle: data['budgetTitle'].toString(),
                budgetStartDate: data['budgetStartDate'].toString(),

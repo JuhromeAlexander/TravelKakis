@@ -46,6 +46,14 @@ class IndividualBudget extends StatefulWidget {
 }
 
 class _IndividualBudgetState extends State<IndividualBudget> {
+
+  @override
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   // Reading the Data from Budget Collection
   Future<List> getExpensesData() async {
     List expenseList = [];
@@ -100,7 +108,9 @@ class _IndividualBudgetState extends State<IndividualBudget> {
             budgetCardIndicatorValue:
             (data['budgetSpent'] / data['totalBudget']) * 100,
             budgetStatusColor: data['budgetStatusColor'],
-            categoryList: data['categoryList']));
+            categoryList: data['categoryList'],
+            userName: data['userName']
+        ));
       });
     }
     return budgetList;
