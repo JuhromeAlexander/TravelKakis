@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
-                vertical: 120.0,
+                vertical: 200.0,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
 
                   //password textfield
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: TextField(
                         controller: passwordController,
                         obscureText: true,
@@ -128,17 +128,17 @@ class _LoginState extends State<Login> {
                   ),
 
                   //forgot password
-                   Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          _navigateToForgotPassword(context);
-                        },
-                        child: const Text(
-                          'Forgot Password',
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                      )),
+                  //  Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: TextButton(
+                  //       onPressed: () {
+                  //         _navigateToForgotPassword(context);
+                  //       },
+                  //       child: const Text(
+                  //         'Forgot Password',
+                  //         style: TextStyle(color: Colors.blue),
+                  //       ),
+                  //     )),
 
                   //Login
                   ElevatedButton(
@@ -168,42 +168,42 @@ class _LoginState extends State<Login> {
                       )),
 
                   //Divider
-                  Row(children: <Widget>[
-                    Expanded(
-                      child: Container(
-                          margin: const EdgeInsets.only(right: 10.0),
-                          child: const Divider(
-                            color: Colors.blue,
-                            height: 36,
-                          )),
-                    ),
-                    const Text(
-                      "Or",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    Expanded(
-                      child: Container(
-                          margin: const EdgeInsets.only(left: 10.0),
-                          child: const Divider(
-                            color: Colors.blue,
-                            height: 36,
-                          )),
-                    ),
-                  ]),
+                  // Row(children: <Widget>[
+                  //   Expanded(
+                  //     child: Container(
+                  //         margin: const EdgeInsets.only(right: 10.0),
+                  //         child: const Divider(
+                  //           color: Colors.blue,
+                  //           height: 36,
+                  //         )),
+                  //   ),
+                  //   const Text(
+                  //     "Or",
+                  //     style: TextStyle(color: Colors.blue),
+                  //   ),
+                  //   Expanded(
+                  //     child: Container(
+                  //         margin: const EdgeInsets.only(left: 10.0),
+                  //         child: const Divider(
+                  //           color: Colors.blue,
+                  //           height: 36,
+                  //         )),
+                  //   ),
+                  // ]),
 
                   //Login with google
-                  Container(
-                    margin: const EdgeInsets.only(top: 10.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          minimumSize: const Size(double.infinity, 40)),
-                      child: const Text('Login with Google'),
-                    ),
-                  )
+                  // Container(
+                  //   margin: const EdgeInsets.only(top: 10.0),
+                  //   child: ElevatedButton(
+                  //     onPressed: () {},
+                  //     style: ElevatedButton.styleFrom(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(6),
+                  //         ),
+                  //         minimumSize: const Size(double.infinity, 40)),
+                  //     child: const Text('Login with Google'),
+                  //   ),
+                  // )
                 ],
               ),
             ),
