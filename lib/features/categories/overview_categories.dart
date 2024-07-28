@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:travel_kakis/features/categories/add_category.dart';
+import 'package:travel_kakis/features/categories/delete_category.dart';
 import 'package:travel_kakis/features/categories/edit_category.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 
@@ -24,21 +25,33 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
 
     CollectionReference categoryRef =
     FirebaseFirestore.instance.collection('categories');
-    QuerySnapshot querySnapshot = await categoryRef
-        .where('categoryType', isEqualTo: 'Income')
-        .where('userName', isEqualTo: user_info.getUsername())
-        .get();
+    categoryRef.where('userName', isEqualTo: 'Default').where('categoryType', isEqualTo: 'Income').get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+              categoryName: data['categoryName'].toString(),
+              categoryType: data['categoryType'].toString(),
+              categoryID: data['categoryID'].toString(),
+            )
+            );
+          }
+        }
+    );
 
-    List<DocumentSnapshot> categoryDocs = querySnapshot.docs;
-
-    for (int i = 0; i < categoryDocs.length; i++) {
-      final data = categoryDocs[i].data() as Map<String, dynamic>;
-      categoryList.add(Categories(
-        categoryName: data['categoryName'].toString(),
-        categoryType: data['categoryType'].toString(),
-        categoryID: data['categoryID'].toString()
-      ));
-    }
+    categoryRef.where('userName', isEqualTo: user_info.getUsername()).where('categoryType', isEqualTo: 'Income').get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+              categoryName: data['categoryName'].toString(),
+              categoryType: data['categoryType'].toString(),
+              categoryID: data['categoryID'].toString(),
+            )
+            );
+          }
+        }
+    );
     return categoryList;
   }
 
@@ -137,21 +150,33 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
 
     CollectionReference categoryRef =
     FirebaseFirestore.instance.collection('categories');
-    QuerySnapshot querySnapshot = await categoryRef
-        .where('categoryType', isEqualTo: 'Expense')
-        .where('userName', isEqualTo: user_info.getUsername())
-        .get();
+    categoryRef.where('userName', isEqualTo: 'Default').where('categoryType', isEqualTo: 'Expense').get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+              categoryName: data['categoryName'].toString(),
+              categoryType: data['categoryType'].toString(),
+              categoryID: data['categoryID'].toString(),
+            )
+            );
+          }
+        }
+    );
 
-    List<DocumentSnapshot> categoryDocs = querySnapshot.docs;
-
-    for (int i = 0; i < categoryDocs.length; i++) {
-      final data = categoryDocs[i].data() as Map<String, dynamic>;
-      categoryList.add(Categories(
-          categoryName: data['categoryName'].toString(),
-          categoryType: data['categoryType'].toString(),
-          categoryID: data['categoryID'].toString()
-      ));
-    }
+    categoryRef.where('userName', isEqualTo: user_info.getUsername()).where('categoryType', isEqualTo: 'Expense').get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+              categoryName: data['categoryName'].toString(),
+              categoryType: data['categoryType'].toString(),
+              categoryID: data['categoryID'].toString(),
+            )
+            );
+          }
+        }
+    );
     return categoryList;
   }
 
@@ -269,6 +294,17 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
       });
     });
   }
+
+  _navigateToDeleteExpense(context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DeleteCategory())
+    ).then((_) {
+      setState(() {
+
+      });
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -294,7 +330,7 @@ class _OverviewCategoriesState extends State<OverviewCategories> {
                   child: const Icon(Icons.attach_money_sharp),
                   label: 'Delete Category',
                   onTap: (){
-                    //_navigateToCreateExpense(context);
+                    _navigateToDeleteExpense(context);
                   }
               ),
             ],

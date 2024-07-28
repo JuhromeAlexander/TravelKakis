@@ -98,7 +98,7 @@ class _CreateBudgetState extends State<CreateBudget> {
     CollectionReference categoryRef =
         FirebaseFirestore.instance.collection('categories');
     //QuerySnapshot querySnapshot = await categoryRef.get();
-    categoryRef.get().then(
+    categoryRef.where('userName', isEqualTo: 'Default').get().then(
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
             final data = docSnapshot.data() as Map<String, dynamic>;
@@ -107,6 +107,20 @@ class _CreateBudgetState extends State<CreateBudget> {
                 categoryType: data['categoryType'].toString(),
                 categoryID: data['categoryID'].toString(),
               )
+            );
+          }
+        }
+    );
+
+    categoryRef.where('userName', isEqualTo: user_info.getUsername()).get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            final data = docSnapshot.data() as Map<String, dynamic>;
+            categoryList.add(Categories(
+              categoryName: data['categoryName'].toString(),
+              categoryType: data['categoryType'].toString(),
+              categoryID: data['categoryID'].toString(),
+            )
             );
           }
         }
