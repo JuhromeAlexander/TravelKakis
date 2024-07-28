@@ -10,6 +10,7 @@ import 'package:travel_kakis/features/activity/edit_information.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'package:travel_kakis/features/activity/transport.dart';
+import 'package:travel_kakis/features/activity/weather_details.dart';
 
 class IndividualActivity extends StatefulWidget {
   final DocumentSnapshot activityDocumentSnapshot;
@@ -249,7 +250,9 @@ class _IndividualActivityState extends State<IndividualActivity> {
                                         text: 'Information',
                                       ),
                                       Tab(text: 'Documents'),
+
                                       Tab(text: 'Transport'),
+
                                     ],
                                   ),
                                 ),
@@ -264,6 +267,7 @@ class _IndividualActivityState extends State<IndividualActivity> {
                                   Transport(
                                   activityDocumentID: widget.activityDocumentSnapshot.id,
                                   ),
+
                                 ]),
                               ))),
                     ],

@@ -11,10 +11,10 @@ import 'package:travel_kakis/temp_for_add.dart';
 import 'package:travel_kakis/utils/bottom_navigation.dart';
 import 'package:travel_kakis/features/trips/overview_of_trips.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
 //anything after this is to be removed after finish testing
 import 'package:travel_kakis/features/trips/create_trip.dart';
 import 'package:travel_kakis/features/trips/individual_trip.dart';
+import 'package:travel_kakis/features/activity/weather_details.dart';
 
 
 //This class controls the flow of the pages (i.e it contains bottom nav & screens
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       body: <Widget>[
         OverviewOfTrips(),
         OverviewOfBudget(),
-        //OverviewOfSuggestions(),
+        WeatherDetails(),
         // AddCategory(),
         Profile()
       ][currentPageIndex],

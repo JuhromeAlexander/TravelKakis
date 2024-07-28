@@ -34,7 +34,10 @@ class bottomNavigation extends StatelessWidget {
           label: 'Budget',
         ),
         //floating action button
-
+        NavigationDestination(
+          icon: Icon(Icons.cloud),
+          label: 'Weather',
+        ),
         //profile page
         NavigationDestination(
           icon: Icon(Icons.account_circle_rounded),

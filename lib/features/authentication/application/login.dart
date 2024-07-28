@@ -165,7 +165,8 @@ class _LoginState extends State<Login> {
                           style: TextStyle(
                               color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
-                      )),
+                      )
+                  ),
 
                   //Divider
                   // Row(children: <Widget>[
