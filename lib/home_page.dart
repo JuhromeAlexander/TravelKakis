@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
   callback() {
-    print('hi');
     setState(() {});
   }
 
@@ -93,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         OverviewOfTrips(),
         OverviewOfBudget(),
         //OverviewOfSuggestions(),
-        AddCategory(),
+        // AddCategory(),
         Profile()
       ][currentPageIndex],
     );
@@ -104,8 +103,7 @@ class _HomePageState extends State<HomePage> {
 void _navigateToCreateTrip(context, callback) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CreateTrip()),
-        //CreateTrip(callback: callback,)),
+    MaterialPageRoute(builder: (context) => CreateTrip(callback: callback,)),
   );
 }
 

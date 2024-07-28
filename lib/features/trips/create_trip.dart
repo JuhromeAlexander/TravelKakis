@@ -4,12 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
-import 'package:travel_kakis/features/trips/overview_of_trips.dart' as overview_trips;
+import 'package:travel_kakis/features/trips/overview_of_trips.dart';
 
 class CreateTrip extends StatefulWidget {
+  final Function callback;
   //final Function callback;
   CreateTrip({
     super.key,
+    required this.callback
     //required this.callback
   });
 
@@ -47,6 +49,9 @@ class _CreateTripState extends State<CreateTrip> {
       });
     });
 
+    widget.callback();
+
+    Navigator.pop(context);
 
   }
 
@@ -167,7 +172,7 @@ class _CreateTripState extends State<CreateTrip> {
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(6), // <-- Radius
+                            BorderRadius.circular(6), // <-- Radius
                           ),
                           minimumSize: const Size(double.infinity, 40)),
                       child: const Text(

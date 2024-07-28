@@ -35,11 +35,6 @@ class bottomNavigation extends StatelessWidget {
         ),
         //floating action button
 
-        //for the add function
-        NavigationDestination(
-          icon:  Icon(Icons.thumb_up_alt_sharp),
-          label: 'Suggestions',
-        ),
         //profile page
         NavigationDestination(
           icon: Icon(Icons.account_circle_rounded),

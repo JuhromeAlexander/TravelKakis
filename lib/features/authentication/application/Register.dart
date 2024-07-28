@@ -113,11 +113,11 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       //app bar
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Colors.blueAccent,
         ),
         backgroundColor: Colors.blue.withOpacity(0),
       ),
@@ -141,7 +141,7 @@ class _RegisterState extends State<Register> {
                         style: GoogleFonts.roboto(
                           textStyle: Theme.of(context).textTheme.displayLarge,
                           fontSize: 38,
-                          color: Colors.white,
+                          color: Colors.blue,
                         )),
                   ),
 
@@ -154,12 +154,12 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                                borderSide: BorderSide(color: Colors.blue)),
                             hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.blue),
                             prefixIcon: Icon(
                               Icons.email,
-                              color: Colors.white,
+                              color: Colors.blue,
                             )),
                       )),
 
@@ -170,12 +170,12 @@ class _RegisterState extends State<Register> {
                           controller: usernameController,
                           decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
+                              borderSide: BorderSide(color: Colors.blue)),
                             hintText: 'User',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.blue),
                             prefixIcon: Icon(
                               Icons.account_circle,
-                              color: Colors.white,
+                              color: Colors.blue,
                             )),
                       )),
 
@@ -187,12 +187,12 @@ class _RegisterState extends State<Register> {
                         obscureText: true,
                         decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                                borderSide: BorderSide(color: Colors.blue)),
                             hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.blue),
                             prefixIcon: Icon(
                               Icons.lock,
-                              color: Colors.white,
+                              color: Colors.blue,
                             ))),
                   ),
 
@@ -204,12 +204,13 @@ class _RegisterState extends State<Register> {
                         registerUser();
                       },
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(6), // <-- Radius
                             ),
                             minimumSize: const Size(double.infinity, 40)),
-                        child: const Text('Register'),
+                        child: const Text('Register', style: TextStyle(color: Colors.white),),
                       ),
                     )
                   ],

@@ -5,7 +5,6 @@ import 'package:travel_kakis/features/profile_page/profile_setting.dart';
 import 'package:travel_kakis/utils/user_information.dart' as user_info;
 import 'package:image_picker/image_picker.dart';
 
-
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -14,7 +13,6 @@ class Profile extends StatefulWidget {
 }
 
 class _profileState extends State<Profile> {
-
   String image = user_info.getProfilePicture();
 
   callback() {
@@ -143,22 +141,6 @@ class _profileState extends State<Profile> {
                 },
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit Profile'),
-              ),
-              const Divider(
-                height: 0,
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.person),
-                title: const Text('Friends'),
-              ),
-              const Divider(
-                height: 0,
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.favorite),
-                title: const Text('Favourites'),
               ),
               const Divider(
                 height: 0,
